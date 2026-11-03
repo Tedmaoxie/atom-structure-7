@@ -283,10 +283,9 @@
       if (self.pos[d.item.id]) self.pos[d.item.id].paused = false;
 
       if (!d.moved) {
-        // 轻点：先回到卡片池，再翻面，并在屏幕中央放大展示几秒
+        // 轻点：先回到卡片池原位，再翻面；只有翻到背面（读数据）时才放大预览
         self.returnToPool(d.item, d.stageX, d.stageY);
-        self.flip(d.item);
-        self.previewCard(d.item);
+        if (self.flip(d.item)) self.schedulePreview(d.item);
       } else {
         var placed = self.tryPlace(d.item, ev.clientX, ev.clientY);
         if (!placed) self.returnToPool(d.item, d.stageX, d.stageY);
@@ -382,10 +381,25 @@
 
     this.save();
     this.renderAll();
+
+    // 返回是否翻到了背面（数据面）
+    return el.classList.contains('is-flipped');
   };
 
   /* ================= 卡片放大预览 ================= */
-  // 点击翻面后，把卡片放大到屏幕中央、背景虚化，停留约 2.6 秒再缩回原位
+  // 先让原位翻面动画走完，再把卡片放大到屏幕中央
+  CardTask.prototype.schedulePreview = function (item) {
+    if (this.previewTimer) return;
+    var self = this;
+    this.previewTimer = setTimeout(function () {
+      self.previewTimer = null;
+      var cardEl = self.cardEls[item.id];
+      // 期间若又翻回正面，就不再放大预览
+      if (cardEl && cardEl.classList.contains('is-flipped')) self.previewCard(item);
+    }, 440);
+  };
+
+  // 背面卡片放大到屏幕中央、背景虚化，停留约 2.6 秒再缩回原位
   CardTask.prototype.previewCard = function (item) {
     if (this.previewTimer) return;
 
@@ -399,41 +413,47 @@
     var layer = document.createElement('div');
     layer.className = 'card-preview-layer';
 
+    // 克隆保持设计尺寸，用 scale 控制视觉大小，内部字号比例才不会被裁切
     var clone = el.cloneNode(true);
     clone.classList.remove('is-dragging');
     clone.classList.add('card-preview');
-    clone.style.left = rect.left + 'px';
-    clone.style.top = rect.top + 'px';
-    clone.style.width = rect.width + 'px';
-    clone.style.height = rect.height + 'px';
-    clone.style.transform = 'none';
+    clone.style.left = '0px';
+    clone.style.top = '0px';
+    clone.style.width = CARD_W + 'px';
+    clone.style.height = CARD_H + 'px';
+    clone.style.transformOrigin = 'top left';
+
+    var from = 'translate(' + rect.left.toFixed(1) + 'px,' + rect.top.toFixed(1) + 'px) scale(' +
+      (rect.width / CARD_W).toFixed(4) + ')';
+    clone.style.transform = from;
+
     layer.appendChild(clone);
     document.body.appendChild(layer);
 
-    // 放大到约占屏幕高度 56%，同时保证宽度不超过屏幕一半
+    // 放大到约占屏幕高度 56%，宽度不超过屏幕一半
     var scale = Math.min(
-      (window.innerHeight * 0.56) / rect.height,
-      (window.innerWidth * 0.5) / rect.width
+      (window.innerHeight * 0.56) / CARD_H,
+      (window.innerWidth * 0.52) / CARD_W
     );
-    var dx = window.innerWidth / 2 - (rect.left + rect.width / 2);
-    var dy = window.innerHeight / 2 - (rect.top + rect.height / 2);
+    var tx = window.innerWidth / 2 - (CARD_W * scale) / 2;
+    var ty = window.innerHeight / 2 - (CARD_H * scale) / 2;
 
     el.classList.add('is-previewing');
     void clone.offsetWidth; // 先让起始位置生效，保证有放大过渡
 
     layer.classList.add('is-on');
-    clone.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + scale.toFixed(3) + ')';
+    clone.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + scale.toFixed(3) + ')';
 
     function close() {
       if (!layer.parentNode) return;
-      clone.style.transform = 'none';
+      clone.style.transform = from;
       layer.classList.remove('is-on');
       clearTimeout(self.previewTimer);
       self.previewTimer = setTimeout(function () {
         if (layer.parentNode) layer.parentNode.removeChild(layer);
         el.classList.remove('is-previewing');
         self.previewTimer = null;
-      }, 400);
+      }, 420);
     }
 
     // 点击遮罩可提前收起

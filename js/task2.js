@@ -44,11 +44,9 @@
         '<span class="card-sym">' + item.sym + '</span>';
     },
 
-    // 卡片背面：共价半径 + 数据口径
+    // 卡片背面：只留数值，数据来源统一写在各页"数据口径"里，避免每张卡重复说明
     backHTML: function (item) {
-      return '<div class="card-value">' + item.value + '<small>pm</small></div>' +
-        '<div class="card-unit">共价半径</div>' +
-        '<div class="card-source">Cordero 等，2008<br>单键共价半径</div>';
+      return '<div class="card-value">' + item.value + '<small>pm</small></div>';
     },
 
     tableNote: '<b>共价半径 / pm</b> · Cordero 等，2008（单键共价半径）。把卡片拖回周期表后，观察同一周期、同一主族内半径的变化趋势。'

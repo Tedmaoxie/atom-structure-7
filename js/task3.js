@@ -51,11 +51,9 @@
         '<span class="card-sym ion">' + item.sym + '</span>';
     },
 
-    // 卡片背面：离子半径
+    // 卡片背面：只留数值，数据来源统一写在"数据口径"里，避免每张卡重复说明
     backHTML: function (item) {
-      return '<div class="card-value">' + item.value + '<small>pm</small></div>' +
-        '<div class="card-unit">离子半径</div>' +
-        '<div class="card-source">教材常用数据</div>';
+      return '<div class="card-value">' + item.value + '<small>pm</small></div>';
     }
   });
 
