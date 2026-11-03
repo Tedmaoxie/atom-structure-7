@@ -49,7 +49,7 @@
       return '<div class="card-value">' + item.value + '<small>pm</small></div>';
     },
 
-    tableNote: '<b>共价半径 / pm</b> · Cordero 等，2008（单键共价半径）。把卡片拖回周期表后，观察同一周期、同一主族内半径的变化趋势。'
+    tableNote: '<b>共价半径 / pm</b> · Cordero 等，2008（单键共价半径）。把卡片拖回周期表后，观察同一周期、同一主族内原子半径的变化趋势。'
   });
 
   task.init();
