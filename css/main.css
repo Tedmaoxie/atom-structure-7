@@ -1,0 +1,395 @@
+/* =====================================================================
+   main.css —— 主网页：四个任务入口
+   ===================================================================== */
+
+#stage {
+  padding-top: 26px;
+  gap: 18px;
+}
+
+/* ---------------- 顶部品牌 ---------------- */
+.hero-head {
+  flex: 0 0 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+
+/* 方形印章式标识，只用青绿，不做金色奢华装饰 */
+.brand-seal {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--teal-800);
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--teal-800);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  box-shadow: var(--shadow-paper);
+}
+
+.brand-line {
+  font-size: 16px;
+  letter-spacing: .14em;
+  color: var(--teal-900);
+}
+.brand-sub {
+  margin-top: 3px;
+  font-size: 12px;
+  letter-spacing: .18em;
+  color: var(--ink-soft);
+}
+
+/* ---------------- 标题区 ---------------- */
+.hero {
+  flex: 0 0 214px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 6px 6px 22px;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: 76px;
+  line-height: 1.05;
+  letter-spacing: .16em;
+  color: var(--teal-900);
+  margin: 0;
+  font-weight: 600;
+}
+
+.hero-rule {
+  width: 132px;
+  height: 3px;
+  margin: 16px 0 14px;
+  background: linear-gradient(90deg, var(--teal-600), rgba(13, 148, 136, 0));
+}
+
+.hero-sub {
+  margin: 0;
+  font-size: 21px;
+  letter-spacing: .07em;
+  color: var(--ink-soft);
+}
+
+.hero-aside {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+.aside-line {
+  font-size: 16px;
+  color: var(--ink-soft);
+  letter-spacing: .03em;
+}
+.aside-line span {
+  display: inline-block;
+  min-width: 84px;
+  margin-right: 12px;
+  color: var(--teal-700, #0f766e);
+  font-size: 13px;
+  letter-spacing: .14em;
+}
+
+/* ---------------- 四张任务卡：可翻转，默认盲选 ---------------- */
+.task-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  padding: 6px 6px 0;
+}
+
+.flip-card {
+  position: relative;
+  min-height: 0;
+  perspective: 1800px;
+  cursor: pointer;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .75s cubic-bezier(.2, .72, .25, 1);
+}
+
+.flip-card.is-flipped { cursor: default; }
+.flip-card.is-flipped .flip-inner { transform: rotateY(180deg); }
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: var(--shadow-paper);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 盲选封面：只显示编号，不透露任务内容 */
+.flip-cover {
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 36px 26px;
+  background:
+    radial-gradient(circle at 50% 24%, #ffffff 0%, rgba(255, 255, 255, 0) 58%),
+    linear-gradient(158deg, #fffef8 0%, #f2faf7 100%);
+  transition: box-shadow .3s ease-out;
+}
+
+.flip-card:not(.is-flipped):hover .flip-cover {
+  box-shadow: 0 2px 3px rgba(6, 95, 70, .06), 0 24px 44px rgba(6, 95, 70, .14);
+}
+
+/* 封面折痕 */
+.flip-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(180deg, transparent 0 40%, rgba(6, 95, 70, .05) 40% calc(40% + 1px), transparent calc(40% + 1px)),
+    linear-gradient(128deg, transparent 0 62%, rgba(6, 95, 70, .04) 62% calc(62% + 1px), transparent calc(62% + 1px));
+}
+
+/* 右上角折角 */
+.cover-fold {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-style: solid;
+  border-width: 0 58px 58px 0;
+  border-color: transparent var(--mint-100) transparent transparent;
+  filter: drop-shadow(-1px 1px 1px rgba(6, 95, 70, .12));
+}
+
+.cover-index {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  letter-spacing: .34em;
+  color: #93aaa3;
+}
+
+.cover-title {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  color: var(--teal-900);
+}
+
+.cover-hint {
+  padding: 9px 22px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 999px;
+  background: rgba(240, 253, 250, .85);
+  font-size: 16px;
+  letter-spacing: .12em;
+  color: var(--teal-700, #0f766e);
+}
+
+.cover-mark {
+  position: absolute;
+  bottom: 26px;
+  font-size: 14px;
+  letter-spacing: .18em;
+  color: #8a9a95;
+}
+
+/* 正面：任务详情 */
+.flip-front {
+  transform: rotateY(180deg);
+  padding: 28px 26px 24px;
+  pointer-events: none;
+}
+
+.flip-card.is-flipped .flip-front { pointer-events: auto; }
+
+/* 纸面折痕：只保留一条斜向淡线，避免横线压到标题 */
+.flip-front::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(126deg, transparent 0 62%, rgba(6, 95, 70, .045) 62% calc(62% + 1px), transparent calc(62% + 1px));
+}
+
+/* 右上角“翻回背面”，方便课堂重新盲选 */
+.flip-back {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  padding: 6px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 6px;
+  background: rgba(255, 254, 248, .9);
+  color: var(--ink-soft);
+  font-size: 13px;
+  letter-spacing: .04em;
+  cursor: pointer;
+  z-index: 3;
+}
+.flip-back:hover { color: var(--teal-800); border-color: var(--teal-600); }
+
+.task-index {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  letter-spacing: .06em;
+  color: var(--line-strong);
+  line-height: 1;
+}
+
+.task-body {
+  flex: 1;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.task-kicker {
+  display: inline-block;
+  padding: 5px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  font-size: 14px;
+  letter-spacing: .18em;
+  color: var(--teal-700, #0f766e);
+  background: rgba(240, 253, 250, .8);
+  margin-bottom: 16px;
+}
+
+.flip-front h2 {
+  margin: 0 0 14px;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--teal-900);
+  line-height: 1.35;
+}
+
+.flip-front p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  letter-spacing: .01em;
+}
+
+/* 卡片内的数据口径小字，让正面信息更完整 */
+.task-meta {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: .02em;
+  color: #7f8f8a;
+}
+
+.task-foot {
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.task-progress { display: flex; flex-direction: column; gap: 8px; }
+
+.task-progress-bar {
+  height: 5px;
+  border-radius: 3px;
+  background: #e4efec;
+  overflow: hidden;
+}
+.task-progress-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--teal-600);
+  transition: width .3s ease-out;
+}
+
+.task-progress span {
+  font-size: 15px;
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.task-enter-btn {
+  height: 48px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  background: var(--teal-800);
+  border: 1px solid var(--teal-900);
+  color: #f7fffd;
+  font-size: 16px;
+  letter-spacing: .06em;
+  text-decoration: none;
+  transition: background-color .2s ease-out, transform .2s ease-out;
+  white-space: nowrap;
+}
+.task-enter-btn:hover { background: var(--teal-900); transform: translateY(-1px); }
+
+.task-reset {
+  padding: 8px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 14px;
+  letter-spacing: .03em;
+  cursor: pointer;
+  transition: color .2s ease-out, border-color .2s ease-out;
+}
+.task-reset:hover { color: var(--red); border-color: #d9a7a2; }
+
+/* ---------------- 页脚 ---------------- */
+.hero-foot {
+  flex: 0 0 58px;
+  display: flex;
+  align-items: center;
+  gap: 46px;
+  padding: 0 8px;
+  border-top: 1px solid var(--line);
+}
+
+.foot-item {
+  font-size: 14px;
+  color: var(--ink-soft);
+  letter-spacing: .02em;
+}
+.foot-item b {
+  color: var(--teal-800);
+  font-weight: 600;
+  margin-right: 8px;
+  letter-spacing: .1em;
+}

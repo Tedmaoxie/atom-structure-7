@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>常见化合价卡片探究 · 元素周期律</title>
+  <link rel="stylesheet" href="css/base.css?v=9">
+  <link rel="stylesheet" href="css/task.css?v=9">
+</head>
+<body class="task-page">
+  <div id="stage">
+    <!-- 顶栏：返回、标题、记录入口 -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="back-link" href="index.html">← 主网页</a>
+        <div class="title-block">
+          <div class="eyebrow" id="eyebrow">任务四 · 常见化合价</div>
+          <h1 id="page-title">常见化合价与周期表位置</h1>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="progress-chip" id="progress-chip">已翻面 0 / 32</div>
+        <button class="btn" id="btn-reset" type="button">重置本任务记录</button>
+        <button class="btn btn-primary" id="btn-records" type="button">一键展开记录</button>
+      </div>
+    </header>
+
+    <!-- 主区：周期表横跨顶部，下方左卡片池、右图表 -->
+    <main class="board">
+      <!-- 顶部横带：左任务说明 + 中周期表 + 右数据口径，填满整行 -->
+      <div class="top-row">
+        <section class="panel info-panel">
+          <div class="panel-head">
+            <div class="panel-title">任务说明</div>
+          </div>
+          <div class="info-body">
+            <div class="info-goal">寻找常见化合价与周期表位置的联系</div>
+            <ol class="info-steps">
+              <li>轻点卡片翻面，读出常见价态</li>
+              <li>把卡片拖到周期表对应格子</li>
+              <li>翻面后看右下散点图</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="panel periodic-panel">
+          <div class="panel-head">
+            <div class="panel-title">周期表归位区</div>
+            <div class="panel-hint">未归位只显示序数；放错格子标红，可拖出重放</div>
+          </div>
+          <div class="table-wrap" id="periodic"></div>
+        </section>
+
+        <section class="panel info-panel">
+          <div class="panel-head">
+            <div class="panel-title">数据口径</div>
+          </div>
+          <div class="info-body">
+            <div class="info-line"><span>价态范围</span>高中常见价态（含负价）</div>
+            <div class="info-line"><span>散点</span>横轴原子序数，纵轴常见价态</div>
+            <div class="info-line"><span>多价态</span>同一元素可出现多个点</div>
+            <div class="info-note">一个元素可以有多个点，翻面后全部同时点亮。</div>
+          </div>
+        </section>
+      </div>
+
+      <div class="lower">
+        <section class="panel pool-panel">
+          <div class="panel-head">
+            <div class="panel-title">散落卡片</div>
+            <div class="panel-hint">按住暂停漂浮 · 轻点翻面 · 拖到上方周期表归位</div>
+          </div>
+          <div class="pool" id="pool">
+            <div class="pool-watermark" id="pool-watermark">待整理</div>
+          </div>
+        </section>
+
+        <div class="analysis-col">
+          <section class="panel chart-panel">
+            <div class="panel-head">
+              <div class="panel-title">散点图</div>
+              <div class="panel-hint">高中常见价态（含负价）· 翻面后多价态同时点亮</div>
+            </div>
+            <div class="chart-wrap"><div id="scatter" style="height:100%"></div></div>
+          </section>
+
+          <section class="panel side-panel">
+            <div class="panel-head">
+              <div class="panel-title">观察记录</div>
+            </div>
+            <div class="side-body" id="side-body"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 一键展开记录面板（适合截图投屏） -->
+  <div class="record-overlay" id="record-overlay">
+    <div class="record-sheet">
+      <div class="record-head">
+        <h2 id="record-title">探究记录</h2>
+        <div style="display:flex;gap:12px">
+          <button class="btn" id="btn-record-reset" type="button">清空记录</button>
+          <button class="btn btn-primary" id="btn-record-close" type="button">收起</button>
+        </div>
+      </div>
+      <div class="record-body">
+        <div class="record-left">
+          <div class="record-stats" id="record-stats"></div>
+          <div class="record-table-wrap">
+            <table class="record-table" id="record-table"></table>
+          </div>
+          <div class="record-note">
+            停留时间 = 卡片首次翻面 → 正确拖入周期表格子的时长；散点图按元素去重，历史列表保留翻面与重复点击次数。记录保存在本机浏览器，刷新不丢失。
+          </div>
+        </div>
+        <div class="record-right">
+          <div class="record-chart-title">当前散点图</div>
+          <div class="record-chart" id="record-chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js?v=9"></script>
+  <script src="js/common.js?v=9"></script>
+  <script src="js/chart.js?v=9"></script>
+  <script src="js/card-task.js?v=9"></script>
+  <script src="js/task4.js?v=9"></script>
+</body>
+</html>

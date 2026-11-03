@@ -1,0 +1,390 @@
+/* =====================================================================
+   task1.css —— 任务一：构造原子结构示意图
+   ===================================================================== */
+
+.task1 #stage { padding-top: 0; }
+
+.task1-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+/* 顶部横带固定高度，下方两栏平分剩余空间 */
+.task1-main .top-row { flex: 0 0 340px; }
+
+.task1-lower {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 900px 1fr;
+  gap: 18px;
+}
+
+/* ---------------- 左侧构造器 ---------------- */
+.constructor-body {
+  flex: 1;
+  min-height: 0;
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.counter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.counter-box {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper-2);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.counter-label {
+  font-size: 15px;
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+}
+.counter-label b {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--teal-900);
+  letter-spacing: .04em;
+  margin-bottom: 2px;
+}
+
+.counter-controls { display: flex; align-items: center; gap: 6px; }
+
+.counter-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--teal-800);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background-color .2s ease-out, transform .2s ease-out;
+  touch-action: manipulation;
+}
+.counter-btn:hover { background: var(--mint-100); }
+.counter-btn:active { transform: scale(.94); }
+.counter-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+.counter-value {
+  min-width: 52px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 34px;
+  line-height: 1;
+  color: var(--teal-900);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 原子结构展示：左平面示意图 + 右三维模型 */
+.atom-panel-body {
+  flex: 1;
+  min-height: 0;
+  padding: 10px 12px 14px;
+  display: flex;
+}
+
+.atom-row {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.atom-box {
+  position: relative;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  background:
+    radial-gradient(closest-side at 50% 50%, rgba(204, 251, 241, .55), rgba(255, 254, 248, .2)),
+    repeating-linear-gradient(0deg, rgba(6, 95, 70, .025) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(90deg, rgba(6, 95, 70, .025) 0 1px, transparent 1px 26px);
+  display: grid;
+  place-items: center;
+  padding: 12px 8px 8px;
+  overflow: hidden;
+}
+
+.atom-box #atom-graphic { display: grid; place-items: center; }
+
+.atom-box svg {
+  width: 340px;
+  height: 340px;
+  max-width: 100%;
+}
+
+.atom-box canvas {
+  width: 340px;
+  height: 340px;
+  max-width: 100%;
+  display: block;
+}
+
+.atom-caption {
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  font-size: 14px;
+  letter-spacing: .1em;
+  color: rgba(6, 95, 70, .62);
+}
+
+/* 元素信息行 */
+.element-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.element-symbol {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  color: var(--teal-900);
+  letter-spacing: .04em;
+}
+.element-symbol small { font-size: 16px; color: var(--ink-soft); margin-left: 8px; letter-spacing: .08em; }
+
+.element-pos { font-size: 15px; color: var(--ink-soft); letter-spacing: .04em; }
+
+/* 三项判定清单 */
+.check-list { display: flex; flex-direction: column; gap: 6px; }
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--paper-2);
+  border: 1px solid transparent;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  transition: background-color .2s ease-out, border-color .2s ease-out;
+}
+
+.check-dot {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  color: #fff;
+  background: #fff;
+}
+
+.check-item.ok { background: #f1fdfa; border-color: #c8e8e1; color: var(--teal-900); }
+.check-item.ok .check-dot { background: var(--teal-600); border-color: var(--teal-600); }
+.check-item.bad { background: #fdf3f1; border-color: #f0d3ce; color: #8f2f26; }
+.check-item.bad .check-dot { background: var(--red); border-color: var(--red); }
+
+/* 状态提示与点亮按钮 */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+}
+
+.status-text {
+  font-size: 16px;
+  letter-spacing: .02em;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+.status-bar.is-ok { background: #f0fdfa; border-color: #b9e2d9; }
+.status-bar.is-ok .status-text { color: var(--teal-900); }
+.status-bar.is-bad { background: #fdf3f1; border-color: #efd0cb; }
+.status-bar.is-bad .status-text { color: #8f2f26; }
+
+.btn-lightup {
+  height: 52px;
+  padding: 0 22px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  border: 1px solid var(--teal-900);
+  background: var(--teal-800);
+  color: #f7fffd;
+  font-size: 17px;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: background-color .2s ease-out, transform .2s ease-out;
+  white-space: nowrap;
+}
+.btn-lightup:hover { background: var(--teal-900); }
+.btn-lightup:active { transform: translateY(1px); }
+.btn-lightup:disabled { background: #cfded9; border-color: #c3d6d0; color: #7b8f89; cursor: not-allowed; }
+
+/* ---------------- 右栏：判定与点亮 ---------------- */
+.judge-body {
+  flex: 1;
+  min-height: 0;
+  padding: 14px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+}
+
+/* 判定栏较窄，状态文字与按钮改为上下排列 */
+.judge-body .status-bar {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.judge-body .btn-lightup { width: 100%; }
+
+.judge-body .lit-board {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding: 12px 0 0;
+  align-items: flex-start;
+}
+
+/* 左栏操作提示 */
+.side-hint {
+  margin-top: 2px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  background: rgba(240, 253, 250, .55);
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  letter-spacing: .01em;
+}
+
+/* ---------------- 右侧周期表 ---------------- */
+.task1 .table-wrap {
+  padding: 14px 12px 6px;
+  align-items: center;
+}
+
+.task1 .pt-cell { cursor: pointer; }
+.task1 .pt-cell:hover { border-color: var(--teal-500); background: #f5fdfa; }
+
+.task1 .pt-cell.is-lit {
+  background: #eefcf7;
+  border-color: var(--teal-600);
+  box-shadow: 0 0 0 2px rgba(13, 148, 136, .10);
+}
+
+.task1 .pt-cell.is-lit .pt-sym,
+.task1 .pt-cell.is-lit .pt-num { opacity: .0; }
+
+.task1 .pt-cell .pt-slot { pointer-events: none; display: grid; place-items: center; }
+.task1 .pt-cell .pt-slot svg { width: 100%; height: 100%; }
+
+/* 周期表下方已点亮清单 */
+.lit-board {
+  flex: 0 0 auto;
+  min-height: 68px;
+  border-top: 1px solid var(--line);
+  padding: 10px 16px 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.lit-board-label {
+  font-size: 14px;
+  letter-spacing: .1em;
+  color: var(--ink-soft);
+}
+
+.lit-board-list {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lit-chip {
+  min-width: 38px;
+  padding: 4px 9px;
+  border: 1px solid #c8e8e1;
+  border-radius: 4px;
+  background: #f1fdfa;
+  color: var(--teal-900);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  text-align: center;
+}
+
+.lit-empty { font-size: 15px; color: #9aa5a1; letter-spacing: .04em; }
+
+/* ---------------- 记录面板内的结构图墙 ---------------- */
+.structure-wall {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper-2);
+  padding: 10px;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  align-content: start;
+}
+
+.wall-item {
+  border: 1px solid #dcebe7;
+  border-radius: 6px;
+  background: var(--paper);
+  padding: 4px 2px 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.wall-item svg { width: 56px; height: 56px; }
+.wall-item span {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--teal-900);
+  letter-spacing: .04em;
+}
+
+.wall-empty {
+  grid-column: 1 / -1;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+  letter-spacing: .05em;
+}

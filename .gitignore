@@ -1,0 +1,11 @@
+# 内部设计资料，不随仓库发布
+提示词.md
+折纸风格UI.md
+
+# 系统与编辑器临时文件
+Thumbs.db
+.DS_Store
+desktop.ini
+.vscode/
+.idea/
+*.log

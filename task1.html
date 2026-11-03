@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>构造原子结构示意图 · 元素周期律</title>
+  <link rel="stylesheet" href="css/base.css?v=9">
+  <link rel="stylesheet" href="css/task.css?v=9">
+  <link rel="stylesheet" href="css/task1.css?v=9">
+</head>
+<body class="task1">
+  <div id="stage">
+    <!-- 顶栏 -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="back-link" href="index.html">← 主网页</a>
+        <div class="title-block">
+          <div class="eyebrow">任务一 · 原子结构</div>
+          <h1>构造原子结构示意图</h1>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="progress-chip" id="progress-chip">已点亮 0 / 32</div>
+        <button class="btn" id="btn-reset" type="button">重置本任务记录</button>
+        <button class="btn btn-primary" id="btn-records" type="button">一键展开记录</button>
+      </div>
+    </header>
+
+    <main class="task1-main">
+      <!-- 顶部横带：左点亮规则 + 中周期表 + 右已点亮清单 -->
+      <div class="top-row">
+        <section class="panel info-panel">
+          <div class="panel-head">
+            <div class="panel-title">点亮规则</div>
+          </div>
+          <div class="info-body">
+            <div class="info-line"><span>① 元素</span>质子数决定元素种类</div>
+            <div class="info-line"><span>② 中性</span>电子数 = 质子数</div>
+            <div class="info-line"><span>③ 排布</span>2、8、18…，最外层不超过 8</div>
+            <div class="info-note">三项同时满足才能点亮。先完成铝，再自由探索其他元素。</div>
+          </div>
+        </section>
+
+        <section class="panel periodic-panel">
+          <div class="panel-head">
+            <div class="panel-title">周期表 · 点亮区</div>
+            <div class="panel-hint">未点亮只显示序数；点击已点亮格子可快速载入</div>
+          </div>
+          <div class="table-wrap" id="periodic"></div>
+        </section>
+
+        <section class="panel info-panel">
+          <div class="panel-head">
+            <div class="panel-title">已点亮</div>
+            <div class="panel-hint" id="lit-count-hint">0 / 26</div>
+          </div>
+          <div class="info-body">
+            <div class="lit-board-list" id="lit-board-list">
+              <span class="lit-empty">还没有点亮的元素</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="task1-lower">
+        <!-- 左：粒子调节 + 元素信息 + 三项判定 + 点亮按钮 -->
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title">粒子调节与判定</div>
+            <div class="panel-hint">本节课不显示中子，不讨论同位素</div>
+          </div>
+          <div class="constructor-body">
+            <div class="counter-row">
+              <div class="counter-box">
+                <div class="counter-label"><b>质子数</b>决定元素种类</div>
+                <div class="counter-controls">
+                  <button class="counter-btn" id="proton-minus" type="button" aria-label="减少质子">−</button>
+                  <div class="counter-value" id="proton-value">13</div>
+                  <button class="counter-btn" id="proton-plus" type="button" aria-label="增加质子">+</button>
+                </div>
+              </div>
+              <div class="counter-box">
+                <div class="counter-label"><b>电子数</b>与质子数比较判断是否中性</div>
+                <div class="counter-controls">
+                  <button class="counter-btn" id="electron-minus" type="button" aria-label="减少电子">−</button>
+                  <div class="counter-value" id="electron-value">13</div>
+                  <button class="counter-btn" id="electron-plus" type="button" aria-label="增加电子">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="element-line">
+              <div class="element-symbol" id="element-symbol">Al <small>铝</small></div>
+              <div class="element-pos" id="element-pos">第 3 周期 · 主族</div>
+            </div>
+
+            <div class="check-list">
+              <div class="check-item" id="check-1">
+                <span class="check-dot"></span>
+                <span id="check-1-text">质子数决定元素：13 号 → 铝（Al）</span>
+              </div>
+              <div class="check-item" id="check-2">
+                <span class="check-dot"></span>
+                <span id="check-2-text">电子数 = 质子数：13 = 13 → 中性原子</span>
+              </div>
+              <div class="check-item" id="check-3">
+                <span class="check-dot"></span>
+                <span id="check-3-text">电子层排布：2, 8, 3 → 符合 2、8、18… 规则</span>
+              </div>
+            </div>
+
+            <div class="status-bar" id="status-bar">
+              <div class="status-text" id="status-text">核对三项判定无误后，把结构示意图点亮到上方周期表。</div>
+              <button class="btn-lightup" id="btn-lightup" type="button">点亮到周期表</button>
+            </div>
+
+            <div class="side-hint">
+              操作提示：点击上方周期表中已点亮的格子，可以快速载入该元素继续观察。
+            </div>
+          </div>
+        </section>
+
+        <!-- 右：教材式平面示意图 + 三维原子模型 -->
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title">原子结构示意 · 三维模型</div>
+            <div class="panel-hint">左侧教材画法，右侧电子在分层轨道上运动</div>
+          </div>
+          <div class="atom-panel-body">
+            <div class="atom-row">
+              <div class="atom-box">
+                <span class="atom-caption">原子结构示意图</span>
+                <div id="atom-graphic"></div>
+              </div>
+              <div class="atom-box">
+                <span class="atom-caption">三维原子模型</span>
+                <canvas id="atom-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- 一键展开记录面板 -->
+  <div class="record-overlay" id="record-overlay">
+    <div class="record-sheet">
+      <div class="record-head">
+        <h2 id="record-title">原子结构 · 点亮记录</h2>
+        <div style="display:flex;gap:12px">
+          <button class="btn" id="btn-record-reset" type="button">清空记录</button>
+          <button class="btn btn-primary" id="btn-record-close" type="button">收起</button>
+        </div>
+      </div>
+      <div class="record-body">
+        <div class="record-left">
+          <div class="record-stats" id="record-stats"></div>
+          <div class="record-table-wrap">
+            <table class="record-table" id="record-table"></table>
+          </div>
+          <div class="record-note">
+            点亮规则：质子数决定元素；电子数等于质子数时才是中性原子；电子层排布需符合 2、8、18… 且最外层不超过 8。完成铝之后解锁自由探索，能点亮多少算多少。
+          </div>
+        </div>
+        <div class="record-right">
+          <div class="record-chart-title">已点亮的结构示意图</div>
+          <div class="structure-wall" id="record-chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js?v=9"></script>
+  <script src="js/common.js?v=9"></script>
+  <script src="js/task1.js?v=9"></script>
+</body>
+</html>

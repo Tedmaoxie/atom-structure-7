@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>元素周期律 · 第一课时</title>
+  <link rel="stylesheet" href="css/base.css?v=9">
+  <link rel="stylesheet" href="css/main.css?v=9">
+</head>
+<body>
+  <div id="stage">
+    <!-- 顶部：课程标识与全局重置 -->
+    <header class="hero-head">
+      <div class="brand">
+        <span class="brand-seal">化</span>
+        <div class="brand-text">
+          <div class="brand-line">实验中学 · AI 赋能化学课堂</div>
+          <div class="brand-sub">必修一 · 元素周期律 · 第一课时</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost" id="btn-reset-all">重置全部记录</button>
+    </header>
+
+    <!-- 主标题区 -->
+    <section class="hero">
+      <div class="hero-main">
+        <h1 class="hero-title">元素周期律</h1>
+        <div class="hero-rule"></div>
+        <p class="hero-sub">以“镁铝合金”为线索，四个任务，四组自主探究</p>
+      </div>
+      <aside class="hero-aside">
+        <div class="aside-line"><span>课堂形式</span>分组探究 · 平板触控</div>
+        <div class="aside-line"><span>数据说明</span>全部本地预设，科学口径统一</div>
+        <div class="aside-line"><span>记录方式</span>自动保存在本机浏览器</div>
+      </aside>
+    </section>
+
+    <!-- 四个任务入口：默认背面朝上，小组盲选后翻牌 -->
+    <main class="task-grid">
+      <div class="flip-card" data-task="task1">
+        <div class="flip-inner">
+          <!-- 背面：盲选封面，不透露任务内容 -->
+          <div class="flip-face flip-cover">
+            <span class="cover-fold"></span>
+            <span class="cover-index">01</span>
+            <span class="cover-title">任务一</span>
+            <span class="cover-hint">点击翻开</span>
+            <span class="cover-mark">元素周期律 · 第一课时</span>
+          </div>
+          <!-- 正面：任务详情 -->
+          <div class="flip-face flip-front">
+            <button class="flip-back" type="button">翻回背面</button>
+            <div class="task-index">01</div>
+            <div class="task-body">
+              <div class="task-kicker">原子结构</div>
+              <h2>构造原子结构示意图</h2>
+              <p>增减质子与电子，判断中性原子与电子层排布，把正确的结构示意图点进周期表。</p>
+              <div class="task-meta">不显示中子 · 本节课不讨论同位素 · 完成铝后自由探索</div>
+            </div>
+            <div class="task-foot">
+              <div class="task-progress">
+                <div class="task-progress-bar"><i data-bar="task1"></i></div>
+                <span data-progress="task1">已点亮 0 / 26</span>
+              </div>
+              <div class="task-actions">
+                <button class="task-reset" data-reset="task1" type="button">清空记录</button>
+                <a class="task-enter-btn" href="task1.html">进入任务 →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" data-task="task2">
+        <div class="flip-inner">
+          <div class="flip-face flip-cover">
+            <span class="cover-fold"></span>
+            <span class="cover-index">02</span>
+            <span class="cover-title">任务二</span>
+            <span class="cover-hint">点击翻开</span>
+            <span class="cover-mark">元素周期律 · 第一课时</span>
+          </div>
+          <div class="flip-face flip-front">
+            <button class="flip-back" type="button">翻回背面</button>
+            <div class="task-index">02</div>
+            <div class="task-body">
+              <div class="task-kicker">原子半径</div>
+              <h2>原子半径卡片探究</h2>
+              <p>在凌乱悬浮的卡片中翻面、读数据、拖回周期表，寻找与铝原子半径相近的元素。</p>
+              <div class="task-meta">共价半径 / pm · Cordero 等，2008（单键共价半径）</div>
+            </div>
+            <div class="task-foot">
+              <div class="task-progress">
+                <div class="task-progress-bar"><i data-bar="task2"></i></div>
+                <span data-progress="task2">已翻面 0 / 32</span>
+              </div>
+              <div class="task-actions">
+                <button class="task-reset" data-reset="task2" type="button">清空记录</button>
+                <a class="task-enter-btn" href="task2.html">进入任务 →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" data-task="task3">
+        <div class="flip-inner">
+          <div class="flip-face flip-cover">
+            <span class="cover-fold"></span>
+            <span class="cover-index">03</span>
+            <span class="cover-title">任务三</span>
+            <span class="cover-hint">点击翻开</span>
+            <span class="cover-mark">元素周期律 · 第一课时</span>
+          </div>
+          <div class="flip-face flip-front">
+            <button class="flip-back" type="button">翻回背面</button>
+            <div class="task-index">03</div>
+            <div class="task-body">
+              <div class="task-kicker">离子半径</div>
+              <h2>离子半径卡片探究</h2>
+              <p>用六配位 Shannon 数据比较正负离子，寻找与 Al³⁺ 半径相近的离子。</p>
+              <div class="task-meta">六配位离子半径 / pm · Shannon，1976（CN = 6）</div>
+            </div>
+            <div class="task-foot">
+              <div class="task-progress">
+                <div class="task-progress-bar"><i data-bar="task3"></i></div>
+                <span data-progress="task3">已翻面 0 / 19</span>
+              </div>
+              <div class="task-actions">
+                <button class="task-reset" data-reset="task3" type="button">清空记录</button>
+                <a class="task-enter-btn" href="task3.html">进入任务 →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" data-task="task4">
+        <div class="flip-inner">
+          <div class="flip-face flip-cover">
+            <span class="cover-fold"></span>
+            <span class="cover-index">04</span>
+            <span class="cover-title">任务四</span>
+            <span class="cover-hint">点击翻开</span>
+            <span class="cover-mark">元素周期律 · 第一课时</span>
+          </div>
+          <div class="flip-face flip-front">
+            <button class="flip-back" type="button">翻回背面</button>
+            <div class="task-index">04</div>
+            <div class="task-body">
+              <div class="task-kicker">常见化合价</div>
+              <h2>化合价卡片探究</h2>
+              <p>翻面读取高中常见价态，观察同一元素的多价态，并与周期表位置建立联系。</p>
+              <div class="task-meta">高中常见价态（含负价）· 翻面后多价态同时点亮</div>
+            </div>
+            <div class="task-foot">
+              <div class="task-progress">
+                <div class="task-progress-bar"><i data-bar="task4"></i></div>
+                <span data-progress="task4">已翻面 0 / 32</span>
+              </div>
+              <div class="task-actions">
+                <button class="task-reset" data-reset="task4" type="button">清空记录</button>
+                <a class="task-enter-btn" href="task4.html">进入任务 →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 页脚说明 -->
+    <footer class="hero-foot">
+      <div class="foot-item"><b>共价半径</b>Cordero 等，2008（单键共价半径）</div>
+      <div class="foot-item"><b>离子半径</b>Shannon，1976（六配位，CN = 6）</div>
+      <div class="foot-item"><b>化合价</b>高中常见价态（含负价）</div>
+      <div class="foot-item"><b>操作</b>鼠标或手指按住卡片可暂停漂浮，拖入周期表格子归位</div>
+    </footer>
+  </div>
+
+  <script src="js/data.js?v=9"></script>
+  <script src="js/common.js?v=9"></script>
+  <script src="js/main.js?v=9"></script>
+</body>
+</html>
