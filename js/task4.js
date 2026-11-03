@@ -87,9 +87,9 @@
         var cls = valenceClass(v, b);
         return '<span class="val-tag' + (cls ? ' ' + cls : '') + '">' + valenceText(v) + '</span>';
       }).join('');
+      // 背面只放元素名称与价态标签，范围说明统一写在页面"数据口径"里，不逐张重复
       return '<div class="card-unit" style="margin:0 0 6px">' + item.name + ' · 常见价态</div>' +
-        '<div class="card-valences">' + tags + '</div>' +
-        '<div class="card-source" style="width:86%">1—20 号元素</div>';
+        '<div class="card-valences">' + tags + '</div>';
     }
   });
 
