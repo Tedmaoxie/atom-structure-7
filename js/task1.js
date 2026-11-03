@@ -59,29 +59,49 @@
   }
 
   /* ---------------- 结构示意图 SVG ---------------- */
-  // 按教材画法：原子核在左侧（圆心），电子层用右侧半圆弧表示，弧顶端标该层电子数
+  // 按教材画法：原子核在左侧，电子层为约 90° 的同心圆弧（上下各 45°），
+  // 电子数嵌在弧线正右方的缺口里，而不是浮在弧线外侧
+  function arcPath(cx, cy, r, a1, a2, width) {
+    var x1 = cx + r * Math.cos(a1);
+    var y1 = cy + r * Math.sin(a1);
+    var x2 = cx + r * Math.cos(a2);
+    var y2 = cy + r * Math.sin(a2);
+    return '<path d="M ' + x1.toFixed(2) + ' ' + y1.toFixed(2) +
+      ' A ' + r.toFixed(2) + ' ' + r.toFixed(2) + ' 0 0 1 ' + x2.toFixed(2) + ' ' + y2.toFixed(2) +
+      '" fill="none" stroke="#0d9488" stroke-width="' + width + '" opacity="0.92"/>';
+  }
+
   function structureSVG(shells, z, size, mini) {
     var cy = size / 2;
-    var cx = size * (mini ? 0.26 : 0.28);
+    var cx = size * (mini ? 0.26 : 0.33);
     var coreR = size * (mini ? 0.1 : 0.085);
-    // 上限 0.44：保证最外层半圆弧的上下端点都落在画布内，不被裁切
     var maxR = size * 0.44;
     var step = (maxR - coreR) / Math.max(shells.length, 1);
+    var half = Math.PI / 4; // 上下各 45°
     var parts = [];
 
     parts.push('<svg viewBox="0 0 ' + size + ' ' + size + '" xmlns="http://www.w3.org/2000/svg">');
 
-    // 电子层：右半圆弧（核在圆心偏左，弧线向右展开）
     shells.forEach(function (n, i) {
       var r = coreR + step * (i + 1);
-      parts.push('<path d="M ' + cx + ' ' + (cy - r) + ' A ' + r + ' ' + r + ' 0 0 1 ' + cx + ' ' + (cy + r) +
-        '" fill="none" stroke="#0d9488" stroke-width="' + (mini ? 1.1 : 1.8) + '" opacity="0.92"/>');
-      if (!mini) {
-        // 电子数标在弧线最右端外侧，字号放大到投屏可读
-        var fs = size * 0.055;
-        parts.push('<text x="' + (cx + r + 8) + '" y="' + (cy + fs * 0.36) + '" font-size="' + fs +
-          '" fill="#047857" font-family="serif">' + n + '</text>');
+      var width = mini ? 1.1 : 1.8;
+
+      if (mini) {
+        // 周期表小格：完整 90° 弧，不放数字
+        parts.push(arcPath(cx, cy, r, -half, half, width));
+        return;
       }
+
+      var fs = Math.min(step * 0.92, size * 0.062);
+      var halfW = String(n).length * fs * 0.32 + 4;
+      var gap = Math.asin(Math.min(0.85, halfW / r));
+
+      // 正右方留出数字缺口，上下各画一段弧
+      parts.push(arcPath(cx, cy, r, -half, -gap, width));
+      parts.push(arcPath(cx, cy, r, gap, half, width));
+
+      parts.push('<text x="' + (cx + r).toFixed(2) + '" y="' + (cy + fs * 0.35).toFixed(2) +
+        '" text-anchor="middle" font-size="' + fs.toFixed(1) + '" fill="#047857" font-family="serif">' + n + '</text>');
     });
 
     // 原子核：圆心标核电荷数

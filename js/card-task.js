@@ -41,6 +41,8 @@
     this.cells = {};     // 周期表格子 DOM
     this.dragging = null;
     this.lastSelected = null;
+    this.showOverlay = false; // 任务三：是否叠加原子半径
+    this.previewTimer = null; // 卡片放大预览的计时器
   }
 
   /* ================= 初始化 ================= */
@@ -71,6 +73,7 @@
 
     this.bindButtons();
     this.bindDrag();
+    this.bindOverlay();
 
     this.renderAll();
     this.startLoop();
@@ -92,9 +95,12 @@
     var cols = Math.min(8, this.items.length);
     var rows = Math.ceil(this.items.length / cols);
     var gapX = (poolW - 32 - cols * CARD_W) / Math.max(cols - 1, 1);
-    var gapY = (poolH - 32 - rows * CARD_H) / Math.max(rows - 1, 1);
     gapX = Math.max(gapX, 6);
-    gapY = Math.max(gapY, 6);
+
+    // 垂直方向：间距设上限并整体居中，避免卡片少时上下拉得过开
+    var gapY = Math.min(40, Math.max(6, (poolH - 32 - rows * CARD_H) / Math.max(rows - 1, 1)));
+    var blockH = rows * CARD_H + (rows - 1) * gapY;
+    var startY = Math.max(12, (poolH - blockH) / 2);
 
     this.items.forEach(function (item, index) {
       var col = index % cols;
@@ -104,7 +110,7 @@
       var jitterX = (Math.random() - 0.5) * Math.min(12, gapX * 0.6 + 4);
       var jitterY = (Math.random() - 0.5) * Math.min(10, gapY * 0.5 + 3);
       var x = 16 + col * (CARD_W + gapX) + jitterX;
-      var y = 16 + row * (CARD_H + gapY) + jitterY;
+      var y = startY + row * (CARD_H + gapY) + jitterY;
 
       x = Math.max(10, Math.min(poolW - CARD_W - 10, x));
       y = Math.max(10, Math.min(poolH - CARD_H - 10, y));
@@ -277,9 +283,10 @@
       if (self.pos[d.item.id]) self.pos[d.item.id].paused = false;
 
       if (!d.moved) {
-        // 轻点：先回到卡片池，再翻面
+        // 轻点：先回到卡片池，再翻面，并在屏幕中央放大展示几秒
         self.returnToPool(d.item, d.stageX, d.stageY);
         self.flip(d.item);
+        self.previewCard(d.item);
       } else {
         var placed = self.tryPlace(d.item, ev.clientX, ev.clientY);
         if (!placed) self.returnToPool(d.item, d.stageX, d.stageY);
@@ -375,6 +382,63 @@
 
     this.save();
     this.renderAll();
+  };
+
+  /* ================= 卡片放大预览 ================= */
+  // 点击翻面后，把卡片放大到屏幕中央、背景虚化，停留约 2.6 秒再缩回原位
+  CardTask.prototype.previewCard = function (item) {
+    if (this.previewTimer) return;
+
+    var el = this.cardEls[item.id];
+    if (!el) return;
+
+    var self = this;
+    var rect = el.getBoundingClientRect();
+    if (!rect.width) return;
+
+    var layer = document.createElement('div');
+    layer.className = 'card-preview-layer';
+
+    var clone = el.cloneNode(true);
+    clone.classList.remove('is-dragging');
+    clone.classList.add('card-preview');
+    clone.style.left = rect.left + 'px';
+    clone.style.top = rect.top + 'px';
+    clone.style.width = rect.width + 'px';
+    clone.style.height = rect.height + 'px';
+    clone.style.transform = 'none';
+    layer.appendChild(clone);
+    document.body.appendChild(layer);
+
+    // 放大到约占屏幕高度 56%，同时保证宽度不超过屏幕一半
+    var scale = Math.min(
+      (window.innerHeight * 0.56) / rect.height,
+      (window.innerWidth * 0.5) / rect.width
+    );
+    var dx = window.innerWidth / 2 - (rect.left + rect.width / 2);
+    var dy = window.innerHeight / 2 - (rect.top + rect.height / 2);
+
+    el.classList.add('is-previewing');
+    void clone.offsetWidth; // 先让起始位置生效，保证有放大过渡
+
+    layer.classList.add('is-on');
+    clone.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + scale.toFixed(3) + ')';
+
+    function close() {
+      if (!layer.parentNode) return;
+      clone.style.transform = 'none';
+      layer.classList.remove('is-on');
+      clearTimeout(self.previewTimer);
+      self.previewTimer = setTimeout(function () {
+        if (layer.parentNode) layer.parentNode.removeChild(layer);
+        el.classList.remove('is-previewing');
+        self.previewTimer = null;
+      }, 400);
+    }
+
+    // 点击遮罩可提前收起
+    layer.addEventListener('click', close);
+    this.previewTimer = setTimeout(close, 2600);
   };
 
   /* ================= 归位 ================= */
@@ -624,20 +688,37 @@
     var meta = this.config.meta;
     var pts = this.scatterPoints();
     var total = this.config.chartTotal;
+    var overlay = this.config.overlay;
+    var extra = [];
+    var legend = null;
+
+    // 任务三：叠加已翻面离子对应元素的原子半径，异色空心点便于对比
+    if (this.showOverlay && overlay) {
+      extra = overlay.points(this.flippedItems());
+      legend = [
+        { label: '离子半径', color: '#0d9488' },
+        { label: overlay.label, color: overlay.color, hollow: true }
+      ];
+    }
+
     window.Charts.scatter(document.getElementById('scatter'), {
       width: 880,
       height: 300,
-      xMin: 0.5,
-      xMax: 36.5,
+      xMin: meta.xMin || 0.5,
+      xMax: meta.xMax || 36.5,
+      xTicks: meta.xTicks || [1, 5, 10, 15, 20, 25, 30, 35],
       yMin: meta.yMin,
       yMax: meta.yMax,
       yTicks: meta.yTicks || 5,
-      xTicks: [1, 5, 10, 15, 20, 25, 30, 35],
       xLabel: meta.scatterX,
       yLabel: meta.scatterY,
       unit: this.config.unit,
       formatY: this.config.formatY,
       points: pts,
+      extraPoints: extra,
+      extraColor: overlay ? overlay.color : null,
+      extraLabel: overlay ? overlay.label : null,
+      legend: legend,
       counterText: '已点亮 ' + this.litElementCount() + ' / ' + total
     });
   };
@@ -735,6 +816,24 @@
     });
   };
 
+  // 任务三：一键叠加对应元素的原子半径，与离子半径异色对比
+  CardTask.prototype.bindOverlay = function () {
+    var self = this;
+    var btn = document.getElementById('btn-atomic-r');
+    if (!btn || !this.config.overlay) return;
+
+    btn.addEventListener('click', function () {
+      if (!self.flippedItems().length) {
+        window.App.toast('先翻面几张卡片，再叠加对应的原子半径');
+        return;
+      }
+      self.showOverlay = !self.showOverlay;
+      btn.classList.toggle('is-on', self.showOverlay);
+      btn.textContent = self.showOverlay ? '收起原子半径' : '叠加原子半径';
+      self.renderScatter();
+    });
+  };
+
   CardTask.prototype.openRecords = function () {
     var self = this;
     var flipped = this.flippedItems();
@@ -798,12 +897,12 @@
     window.Charts.scatter(document.getElementById('record-chart'), {
       width: 620,
       height: 640,
-      xMin: 0.5,
-      xMax: 36.5,
+      xMin: meta.xMin || 0.5,
+      xMax: meta.xMax || 36.5,
       yMin: meta.yMin,
       yMax: meta.yMax,
-      yTicks: 7,
-      xTicks: [1, 5, 10, 15, 20, 25, 30, 35],
+      yTicks: meta.yTicks || 7,
+      xTicks: meta.xTicks || [1, 5, 10, 15, 20, 25, 30, 35],
       xLabel: meta.scatterX,
       yLabel: meta.scatterY,
       unit: this.config.unit,

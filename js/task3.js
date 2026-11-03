@@ -1,7 +1,7 @@
 /* =====================================================================
-   task3.js —— 任务三：离子半径卡片探究
-   数据：主族常见离子，六配位（CN = 6）Shannon 离子半径 / pm
-   核心对比：Mg²⁺ 72 > Al³⁺ 53.5 > Si⁴⁺ 40
+   task3.js —— 任务三：离子半径与核外电子排布
+   数据：常见简单离子，教材常用离子半径 / pm
+   核心对比：Mg²⁺ 72 > Al³⁺ 53.5 > Si⁴⁺ 40（三者核外均为 10 电子）
    ===================================================================== */
 (function () {
   'use strict';
@@ -24,11 +24,8 @@
     meta: meta,
     items: items,
     unit: 'pm',
-    refLabel: meta.refLabel,   // Al³⁺
-    refValue: meta.refValue,   // 53.5 pm
     chartTotal: items.length,
-    sideType: 'info',
-    sideHint: '散点横坐标为母元素原子序数，纵坐标为六配位离子半径。可重点比较 Na⁺、Mg²⁺、Al³⁺ 与 O²⁻、F⁻ 等离子的半径关系。',
+    sideHint: '散点横坐标为母元素原子序数，纵坐标为离子半径。同一周期内，阳离子半径随核电荷数增大而减小；阴离子半径明显大于同周期阳离子。',
 
     chartable: function () { return true; },
     pointsFor: function (item) { return [{ x: item.z, y: item.value, label: item.sym }]; },
@@ -36,20 +33,30 @@
     displayValue: function (item) { return item.value; },
     chipValue: function (item) { return item.value; },
 
+    // 叠加对照：已翻面离子对应的原子半径（共价半径），用另一种颜色标出
+    overlay: {
+      label: '原子半径',
+      color: '#c2693c',
+      points: function (flipped) {
+        return flipped.map(function (item) {
+          var el = window.CHEM.byZ[item.z];
+          return el && el.covalent ? { x: el.z, y: el.covalent, label: el.sym } : null;
+        }).filter(Boolean);
+      }
+    },
+
     // 卡片正面：只显示离子符号，母元素序号和中文名留给学生自己判断
     frontHTML: function (item) {
       return '<span class="card-fold"></span>' +
         '<span class="card-sym ion">' + item.sym + '</span>';
     },
 
-    // 卡片背面：六配位离子半径 + 数据口径
+    // 卡片背面：离子半径
     backHTML: function (item) {
       return '<div class="card-value">' + item.value + '<small>pm</small></div>' +
-        '<div class="card-unit">六配位离子半径</div>' +
-        '<div class="card-source">Shannon，1976<br>CN = 6</div>';
-    },
-
-    tableNote: '<b>六配位离子半径 / pm</b> · Shannon，1976（CN = 6）。离子卡片归位到母元素所在的周期表格子，便于比较同一周期内阳离子、阴离子的半径变化。'
+        '<div class="card-unit">离子半径</div>' +
+        '<div class="card-source">教材常用数据</div>';
+    }
   });
 
   task.init();

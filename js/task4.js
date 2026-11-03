@@ -1,13 +1,14 @@
 /* =====================================================================
    task4.js —— 任务四：常见化合价卡片探究
-   数据：1—36 号非稀有气体共 32 张（含过渡金属），高中常见价态（含负价）
+   数据：1—20 号非稀有气体共 17 张，高中常见价态（含负价）
+   重点：最高正价与最低负价分色标注，与周期表位置建立联系
    ===================================================================== */
 (function () {
   'use strict';
 
   var meta = window.CHEM.meta.task4;
 
-  var items = window.CHEM.elementCards.map(function (el) {
+  var items = window.CHEM.valenceCards.map(function (el) {
     return {
       id: 'e' + el.z,
       z: el.z,
@@ -23,6 +24,24 @@
     return String(v);
   }
 
+  // 找出最高正价与最低负价，用于分色
+  function bounds(list) {
+    var maxPos = 0;
+    var minNeg = 0;
+    list.forEach(function (v) {
+      if (v > maxPos) maxPos = v;
+      if (v < minNeg) minNeg = v;
+    });
+    return { maxPos: maxPos, minNeg: minNeg };
+  }
+
+  // 每张卡片的价态颜色：最高正价深青、最低负价橙色、其余浅青
+  function valenceClass(v, b) {
+    if (v > 0 && v === b.maxPos) return 'max-pos';
+    if (v < 0 && v === b.minNeg) return 'min-neg';
+    return '';
+  }
+
   // 周期表格子里显示价态范围，例如 -3~+5
   function chipValue(item) {
     var list = item.valences;
@@ -36,16 +55,18 @@
     meta: meta,
     items: items,
     unit: '价',
-    refLabel: 'Al',
-    refValue: 121,
     chartTotal: items.length,
-    sideHint: '散点图：横坐标原子序数，纵坐标常见价态，一个元素可以有多个点，翻面后同时点亮。',
+    sideHint: '散点横坐标为原子序数，纵坐标为常见价态。深青点为最高正价，橙色点为最低负价，浅青点为其他常见价态。',
 
     chartable: function () { return true; },
-    // 一个元素的全部常见价态同时点亮
+    // 一个元素的全部常见价态同时点亮，并按“最高正价 / 最低负价 / 其他”着色
     pointsFor: function (item) {
+      var b = bounds(item.valences);
       return item.valences.map(function (v) {
-        return { x: item.z, y: v, label: item.sym };
+        var color = '#7fa8a0';
+        if (v > 0 && v === b.maxPos) color = '#0f766e';
+        else if (v < 0 && v === b.minNeg) color = '#c2693c';
+        return { x: item.z, y: v, label: item.sym, color: color };
       });
     },
     numericValue: function (item) { return item.valences[0]; },
@@ -59,17 +80,17 @@
         '<span class="card-sym">' + item.sym + '</span>';
     },
 
-    // 卡片背面：该元素的常见价态（含负价）
+    // 卡片背面：常见价态，最高正价与最低负价用不同底色标出
     backHTML: function (item) {
+      var b = bounds(item.valences);
       var tags = item.valences.map(function (v) {
-        return '<span class="val-tag' + (v < 0 ? ' neg' : '') + '">' + valenceText(v) + '</span>';
+        var cls = valenceClass(v, b);
+        return '<span class="val-tag' + (cls ? ' ' + cls : '') + '">' + valenceText(v) + '</span>';
       }).join('');
       return '<div class="card-unit" style="margin:0 0 6px">' + item.name + ' · 常见价态</div>' +
         '<div class="card-valences">' + tags + '</div>' +
-        '<div class="card-source" style="width:86%">高中常见价态</div>';
-    },
-
-    tableNote: '<b>高中常见价态</b>（含负价）。翻面后该元素的所有常见价态会在散点图中同时点亮；柱状图只显示当前选中元素，不汇总所有元素。'
+        '<div class="card-source" style="width:86%">1—20 号元素</div>';
+    }
   });
 
   task.init();

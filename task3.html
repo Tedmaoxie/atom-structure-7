@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>离子半径卡片探究 · 元素周期律</title>
-  <link rel="stylesheet" href="css/base.css?v=9">
-  <link rel="stylesheet" href="css/task.css?v=9">
+  <link rel="stylesheet" href="css/base.css?v=12">
+  <link rel="stylesheet" href="css/task.css?v=12">
 </head>
 <body class="task-page">
   <div id="stage">
@@ -15,7 +15,7 @@
         <a class="back-link" href="index.html">← 主网页</a>
         <div class="title-block">
           <div class="eyebrow" id="eyebrow">任务三 · 离子半径</div>
-          <h1 id="page-title">寻找与铝离子半径相似的离子</h1>
+          <h1 id="page-title">Mg²⁺ 与 Al³⁺ 都是 10 电子，半径为何不同？</h1>
         </div>
       </div>
       <div class="topbar-right">
@@ -34,11 +34,11 @@
             <div class="panel-title">任务说明</div>
           </div>
           <div class="info-body">
-            <div class="info-goal">寻找与 Al³⁺ 半径相近的离子</div>
+            <div class="info-goal">镁铝合金表面的氧化膜中，含有 Mg²⁺ 和 Al³⁺</div>
             <ol class="info-steps">
               <li>轻点卡片翻面，读出离子半径</li>
               <li>把卡片拖到母元素所在格子</li>
-              <li>点右下角“离子半径计算器”比较差值</li>
+              <li>点“叠加原子半径”，对比得失电子前后的变化</li>
             </ol>
           </div>
         </section>
@@ -56,10 +56,10 @@
             <div class="panel-title">数据口径</div>
           </div>
           <div class="info-body">
-            <div class="info-line"><span>数据来源</span>Shannon，1976</div>
-            <div class="info-line"><span>配位数</span>六配位（CN = 6）</div>
-            <div class="info-line"><span>单位</span>离子半径 / pm</div>
-            <div class="info-note">可以从等电子离子（如 N³⁻、O²⁻、F⁻、Na⁺、Mg²⁺、Al³⁺）入手比较。</div>
+            <div class="info-line"><span>数据</span>常见简单离子半径 / pm</div>
+            <div class="info-line"><span>范围</span>1—20 号及第四周期主族</div>
+            <div class="info-line"><span>对比</span>可叠加对应元素的原子半径</div>
+            <div class="info-note">Mg²⁺ 与 Al³⁺ 核外都是 10 个电子，核电荷数越大，对电子的吸引越强，半径越小。</div>
           </div>
         </section>
       </div>
@@ -79,7 +79,7 @@
           <section class="panel chart-panel">
             <div class="panel-head">
               <div class="panel-title">散点图</div>
-              <div class="panel-hint">六配位离子半径 / pm · Shannon，1976（CN = 6）</div>
+              <button class="chart-toggle" id="btn-atomic-r" type="button">叠加原子半径</button>
             </div>
             <div class="chart-wrap"><div id="scatter" style="height:100%"></div></div>
           </section>
@@ -87,22 +87,12 @@
           <section class="panel side-panel">
             <div class="panel-head">
               <div class="panel-title">观察记录</div>
-              <button class="calc-toggle" id="calc-toggle" type="button">离子半径计算器</button>
             </div>
             <div class="side-body" id="side-body"></div>
           </section>
         </div>
       </div>
     </main>
-
-    <!-- 离子半径计算器浮层：默认收起，点“离子半径计算器”展开 -->
-    <div class="calc-pop" id="calc-pop" hidden>
-      <div class="calc-pop-head">
-        <span>离子半径差值计算器</span>
-        <button class="calc-pop-close" id="calc-close" type="button">收起</button>
-      </div>
-      <div class="calc-pop-body" id="calc-body"></div>
-    </div>
   </div>
 
   <!-- 一键展开记录面板（适合截图投屏） -->
@@ -133,10 +123,10 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=9"></script>
-  <script src="js/common.js?v=9"></script>
-  <script src="js/chart.js?v=9"></script>
-  <script src="js/card-task.js?v=9"></script>
-  <script src="js/task3.js?v=9"></script>
+  <script src="js/data.js?v=12"></script>
+  <script src="js/common.js?v=12"></script>
+  <script src="js/chart.js?v=12"></script>
+  <script src="js/card-task.js?v=12"></script>
+  <script src="js/task3.js?v=12"></script>
 </body>
 </html>

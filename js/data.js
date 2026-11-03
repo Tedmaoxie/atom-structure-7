@@ -62,8 +62,8 @@
   ];
 
   /* ------------------------------------------------------------------
-     任务三离子卡片池：主族常见离子，正负离子都有
-     全部为 Shannon 六配位（CN = 6）离子半径 / pm
+     任务三离子卡片池：常见简单离子，正负离子都有
+     数据为教材常用离子半径 / pm
      核心对比：Mg²⁺ 72 > Al³⁺ 53.5 > Si⁴⁺ 40
      ------------------------------------------------------------------ */
   var ions = [
@@ -95,6 +95,11 @@
   // 任务二、四卡片池：1—36 号排除稀有气体，共 32 张
   var elementCards = elements.filter(function (el) { return !el.noble; });
 
+  // 任务四卡片池：只取 1—20 号非稀有气体，共 17 张（不涉及过渡金属）
+  var valenceCards = elements.filter(function (el) {
+    return el.z <= 20 && !el.noble;
+  });
+
   // 任务二散点点亮范围：主族非稀有元素，共 22 个
   var scatterElements = elements.filter(function (el) {
     return el.block === 'main' && !el.noble;
@@ -125,24 +130,25 @@
       yMax: 220
     },
     task3: {
-      title: '离子半径卡片探究',
-      subtitle: '寻找与 Al³⁺ 半径相似的离子',
-      source: 'Shannon，1976 · 六配位（CN = 6）离子半径',
-      unitNote: '六配位离子半径 / pm',
-      refLabel: 'Al³⁺',
-      refValue: 53.5,
+      title: '离子半径与核外电子排布',
+      subtitle: 'Mg²⁺ 与 Al³⁺ 都是 10 电子，半径为何不同？',
+      source: '离子半径 / pm · 教材常用数据',
+      unitNote: '离子半径 / pm',
       scatterX: '母元素原子序数',
-      scatterY: '六配位离子半径 / pm',
+      scatterY: '离子半径 / pm',
       yMin: 0,
       yMax: 240
     },
     task4: {
       title: '常见化合价卡片探究',
       subtitle: '从镁、铝出发，寻找化合价与周期表位置的联系',
-      source: '高中常见价态',
+      source: '1—20 号元素 · 高中常见价态',
       unitNote: '高中常见价态',
       scatterX: '原子序数',
       scatterY: '常见价态',
+      xMin: 0.5,
+      xMax: 20.5,
+      xTicks: [1, 5, 10, 15, 20],
       yMin: -6,
       yMax: 8,
       yTicks: 7
@@ -155,6 +161,7 @@
     byZ: byZ,
     ions: ions,
     elementCards: elementCards,
+    valenceCards: valenceCards,
     scatterElements: scatterElements,
     mainGroupElements: mainGroupElements,
     meta: meta

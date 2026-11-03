@@ -61,7 +61,7 @@
     out.push('<text x="' + pad.l + '" y="' + (pad.t - 12) + '" font-size="14" fill="#065f46" letter-spacing="1">' + esc(cfg.yLabel || '') + '</text>');
     out.push('<text x="' + (W - pad.r) + '" y="' + (H - 3) + '" text-anchor="end" font-size="12" fill="#5a6360" letter-spacing="1">' + esc(cfg.xLabel || '') + '</text>');
 
-    // 数据点：逐点点亮，已点亮的才绘制
+    // 数据点：逐点点亮，已点亮的才绘制；p.color 可单独指定颜色
     var labeled = {};
     (cfg.points || []).forEach(function (p) {
       if (p.y === null || p.y === undefined || isNaN(p.y)) return;
@@ -71,12 +71,38 @@
       var showLabel = !!p.label && !labeled[p.label];
       if (showLabel) labeled[p.label] = true;
 
-      out.push('<circle cx="' + cx + '" cy="' + cy + '" r="4.6" fill="#0d9488" stroke="#fffef8" stroke-width="1.4"><title>' +
+      var color = p.color || '#0d9488';
+      out.push('<circle cx="' + cx + '" cy="' + cy + '" r="4.6" fill="' + color + '" stroke="#fffef8" stroke-width="1.4"><title>' +
         esc(p.label + '：' + (cfg.formatY ? cfg.formatY(p.y) : p.y) + (cfg.unit ? ' ' + cfg.unit : '')) + '</title></circle>');
       if (showLabel) {
         out.push('<text x="' + (cx + 7) + '" y="' + (cy - 6) + '" font-size="12" fill="#3f5a54">' + esc(p.label) + '</text>');
       }
     });
+
+    // 对照点：空心异色，用于“叠加原子半径”这类同坐标对比
+    (cfg.extraPoints || []).forEach(function (p) {
+      if (p.y === null || p.y === undefined || isNaN(p.y)) return;
+      var color = cfg.extraColor || '#c2693c';
+      out.push('<circle cx="' + px(p.x) + '" cy="' + py(p.y) + '" r="4.8" fill="#fffef8" stroke="' + color +
+        '" stroke-width="2.2"><title>' + esc(p.label + '：' + p.y + (cfg.unit ? ' ' + cfg.unit : '') + '（' +
+        (cfg.extraLabel || '对照') + '）') + '</title></circle>');
+    });
+
+    // 图例：右上角，带浅底避免压住数据点
+    if (cfg.legend && cfg.legend.length) {
+      var widths = cfg.legend.map(function (it) { return 12 + String(it.label).length * 12; });
+      var totalW = widths.reduce(function (a, b) { return a + b; }, 0) + (cfg.legend.length - 1) * 14;
+      var lx = W - pad.r - totalW - 12;
+      var ly = pad.t + 18;
+      out.push('<rect x="' + (lx - 10) + '" y="' + (ly - 15) + '" width="' + (totalW + 20) +
+        '" height="26" rx="13" fill="rgba(255,254,248,.9)" stroke="#e3eeeb"/>');
+      cfg.legend.forEach(function (it, idx) {
+        out.push('<circle cx="' + (lx + 3) + '" cy="' + (ly - 4) + '" r="4.6" fill="' + (it.hollow ? '#fffef8' : it.color) +
+          '" stroke="' + it.color + '" stroke-width="' + (it.hollow ? 2 : 1.2) + '"/>');
+        out.push('<text x="' + (lx + 12) + '" y="' + ly + '" font-size="12" fill="#4f6560">' + esc(it.label) + '</text>');
+        lx += widths[idx] + 14;
+      });
+    }
 
     // 已点亮数量角标
     if (cfg.counterText) {

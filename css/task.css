@@ -613,6 +613,86 @@
 
 .calc-hint { font-size: 13px; color: #8b9691; line-height: 1.55; letter-spacing: .01em; }
 
+/* 散点图头部的小工具按钮（叠加原子半径） */
+.chart-toggle {
+  margin-left: auto;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  color: var(--teal-800);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  letter-spacing: .02em;
+  transition: background .18s ease, color .18s ease;
+}
+.chart-toggle:hover { background: var(--mint-50); }
+.chart-toggle.is-on { background: var(--teal-800); border-color: var(--teal-800); color: #fff; }
+
+/* 任务四：价态标签按“最高正价 / 最低负价 / 其他”分色 */
+.val-tag.max-pos {
+  background: var(--teal-700, #0f766e);
+  border-color: var(--teal-700, #0f766e);
+  color: #fffef8;
+}
+.val-tag.min-neg {
+  background: #c2693c;
+  border-color: #c2693c;
+  color: #fffef8;
+}
+
+/* 图表上的静态图例（任务四） */
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+  font-size: 12px;
+  color: #6d7f7a;
+  letter-spacing: .02em;
+}
+.chart-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.chart-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.chart-legend i.pos { background: #0f766e; }
+.chart-legend i.neg { background: #c2693c; }
+.chart-legend i.other { background: #7fa8a0; }
+
+/* ---------------- 点击卡片后的放大预览 ---------------- */
+.chem-card.is-previewing { opacity: 0; }
+
+.card-preview-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(18, 38, 34, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: background .3s ease, backdrop-filter .3s ease;
+  pointer-events: none;
+}
+.card-preview-layer.is-on {
+  background: rgba(18, 38, 34, .22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: auto;
+}
+
+.chem-card.card-preview {
+  position: fixed;
+  z-index: 302;
+  margin: 0;
+  pointer-events: none;
+  border-radius: 8px;
+  box-shadow: 0 36px 80px rgba(8, 36, 31, .32);
+  transition: transform .4s cubic-bezier(.2, .88, .26, 1);
+}
+
 /* ---------------- 统计 / 柱状图面板 ---------------- */
 .side-body {
   flex: 1;

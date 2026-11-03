@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>常见化合价卡片探究 · 元素周期律</title>
-  <link rel="stylesheet" href="css/base.css?v=9">
-  <link rel="stylesheet" href="css/task.css?v=9">
+  <link rel="stylesheet" href="css/base.css?v=12">
+  <link rel="stylesheet" href="css/task.css?v=12">
 </head>
 <body class="task-page">
   <div id="stage">
@@ -38,7 +38,7 @@
             <ol class="info-steps">
               <li>轻点卡片翻面，读出常见价态</li>
               <li>把卡片拖到周期表对应格子</li>
-              <li>翻面后看右下散点图</li>
+              <li>观察最高正价、最低负价的变化</li>
             </ol>
           </div>
         </section>
@@ -56,10 +56,10 @@
             <div class="panel-title">数据口径</div>
           </div>
           <div class="info-body">
-            <div class="info-line"><span>价态范围</span>高中常见价态（含负价）</div>
-            <div class="info-line"><span>散点</span>横轴原子序数，纵轴常见价态</div>
-            <div class="info-line"><span>多价态</span>同一元素可出现多个点</div>
-            <div class="info-note">一个元素可以有多个点，翻面后全部同时点亮。</div>
+            <div class="info-line"><span>范围</span>1—20 号元素（稀有气体除外）</div>
+            <div class="info-line"><span>价态</span>高中常见价态（含负价）</div>
+            <div class="info-line"><span>颜色</span>最高正价、最低负价分开标注</div>
+            <div class="info-note">同一元素可以有多个点；最高正价与最低负价用颜色区分，便于归纳族与价态的关系。</div>
           </div>
         </section>
       </div>
@@ -79,7 +79,11 @@
           <section class="panel chart-panel">
             <div class="panel-head">
               <div class="panel-title">散点图</div>
-              <div class="panel-hint">高中常见价态（含负价）· 翻面后多价态同时点亮</div>
+              <div class="chart-legend">
+                <span><i class="pos"></i>最高正价</span>
+                <span><i class="neg"></i>最低负价</span>
+                <span><i class="other"></i>其他价态</span>
+              </div>
             </div>
             <div class="chart-wrap"><div id="scatter" style="height:100%"></div></div>
           </section>
@@ -123,10 +127,10 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=9"></script>
-  <script src="js/common.js?v=9"></script>
-  <script src="js/chart.js?v=9"></script>
-  <script src="js/card-task.js?v=9"></script>
-  <script src="js/task4.js?v=9"></script>
+  <script src="js/data.js?v=12"></script>
+  <script src="js/common.js?v=12"></script>
+  <script src="js/chart.js?v=12"></script>
+  <script src="js/card-task.js?v=12"></script>
+  <script src="js/task4.js?v=12"></script>
 </body>
 </html>
