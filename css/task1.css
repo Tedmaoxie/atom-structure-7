@@ -14,7 +14,7 @@
 }
 
 /* 顶部横带固定高度，下方两栏平分剩余空间 */
-.task1-main .top-row { flex: 0 0 340px; }
+.task1-main .top-row { flex: 0 0 372px; }
 
 .task1-lower {
   flex: 1;
@@ -52,14 +52,15 @@
 }
 
 .counter-label {
-  font-size: 15px;
-  letter-spacing: .04em;
+  font-size: 17px;
+  letter-spacing: .03em;
   color: var(--ink-soft);
 }
 .counter-label b {
   display: block;
   font-family: var(--font-serif);
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--teal-900);
   letter-spacing: .04em;
   margin-bottom: 2px;
@@ -145,9 +146,9 @@
   position: absolute;
   left: 12px;
   top: 8px;
-  font-size: 14px;
-  letter-spacing: .1em;
-  color: rgba(6, 95, 70, .62);
+  font-size: 16px;
+  letter-spacing: .08em;
+  color: rgba(6, 95, 70, .68);
 }
 
 /* 元素信息行 */
@@ -166,9 +167,9 @@
   color: var(--teal-900);
   letter-spacing: .04em;
 }
-.element-symbol small { font-size: 16px; color: var(--ink-soft); margin-left: 8px; letter-spacing: .08em; }
+.element-symbol small { font-size: 18px; color: var(--ink-soft); margin-left: 8px; letter-spacing: .06em; }
 
-.element-pos { font-size: 15px; color: var(--ink-soft); letter-spacing: .04em; }
+.element-pos { font-size: 17px; color: var(--ink-soft); letter-spacing: .03em; }
 
 /* 三项判定清单 */
 .check-list { display: flex; flex-direction: column; gap: 6px; }
@@ -181,8 +182,8 @@
   border-radius: 6px;
   background: var(--paper-2);
   border: 1px solid transparent;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 17px;
+  line-height: 1.45;
   color: var(--ink-soft);
   transition: background-color .2s ease-out, border-color .2s ease-out;
 }
@@ -196,7 +197,7 @@
   border: 1px solid var(--line-strong);
   display: grid;
   place-items: center;
-  font-size: 11px;
+  font-size: 12px;
   color: #fff;
   background: #fff;
 }
@@ -219,8 +220,8 @@
 }
 
 .status-text {
-  font-size: 16px;
-  letter-spacing: .02em;
+  font-size: 18px;
+  letter-spacing: .01em;
   color: var(--ink-soft);
   line-height: 1.45;
 }
@@ -237,8 +238,9 @@
   border: 1px solid var(--teal-900);
   background: var(--teal-800);
   color: #f7fffd;
-  font-size: 17px;
-  letter-spacing: .06em;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: .05em;
   cursor: pointer;
   transition: background-color .2s ease-out, transform .2s ease-out;
   white-space: nowrap;
@@ -281,8 +283,8 @@
   border: 1px dashed var(--line-strong);
   border-radius: 8px;
   background: rgba(240, 253, 250, .55);
-  font-size: 14px;
-  line-height: 1.85;
+  font-size: 16px;
+  line-height: 1.7;
   color: var(--ink-soft);
   letter-spacing: .01em;
 }
@@ -321,8 +323,8 @@
 }
 
 .lit-board-label {
-  font-size: 14px;
-  letter-spacing: .1em;
+  font-size: 16px;
+  letter-spacing: .08em;
   color: var(--ink-soft);
 }
 
@@ -340,11 +342,11 @@
   background: #f1fdfa;
   color: var(--teal-900);
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 18px;
   text-align: center;
 }
 
-.lit-empty { font-size: 15px; color: #9aa5a1; letter-spacing: .04em; }
+.lit-empty { font-size: 16px; color: #8b9793; letter-spacing: .03em; }
 
 /* ---------------- 记录面板内的结构图墙 ---------------- */
 .structure-wall {
@@ -375,7 +377,7 @@
 .wall-item svg { width: 56px; height: 56px; }
 .wall-item span {
   font-family: var(--font-serif);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--teal-900);
   letter-spacing: .04em;
 }
@@ -385,6 +387,6 @@
   padding: 60px 20px;
   text-align: center;
   color: var(--ink-soft);
-  font-size: 14px;
-  letter-spacing: .05em;
+  font-size: 16px;
+  letter-spacing: .04em;
 }

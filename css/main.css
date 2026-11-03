@@ -33,14 +33,15 @@
 }
 
 .brand-line {
-  font-size: 16px;
-  letter-spacing: .14em;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .12em;
   color: var(--teal-900);
 }
 .brand-sub {
   margin-top: 3px;
-  font-size: 12px;
-  letter-spacing: .18em;
+  font-size: 14px;
+  letter-spacing: .16em;
   color: var(--ink-soft);
 }
 
@@ -73,8 +74,8 @@
 
 .hero-sub {
   margin: 0;
-  font-size: 21px;
-  letter-spacing: .07em;
+  font-size: 24px;
+  letter-spacing: .06em;
   color: var(--ink-soft);
 }
 
@@ -86,17 +87,17 @@
   padding-bottom: 8px;
 }
 .aside-line {
-  font-size: 16px;
+  font-size: 18px;
   color: var(--ink-soft);
   letter-spacing: .03em;
 }
 .aside-line span {
   display: inline-block;
-  min-width: 84px;
+  min-width: 90px;
   margin-right: 12px;
   color: var(--teal-700, #0f766e);
-  font-size: 13px;
-  letter-spacing: .14em;
+  font-size: 14px;
+  letter-spacing: .12em;
 }
 
 /* ---------------- 四张任务卡：可翻转，默认盲选 ---------------- */
@@ -199,17 +200,18 @@
   border: 1px dashed var(--line-strong);
   border-radius: 999px;
   background: rgba(240, 253, 250, .85);
-  font-size: 16px;
-  letter-spacing: .12em;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: .1em;
   color: var(--teal-700, #0f766e);
 }
 
 .cover-mark {
   position: absolute;
   bottom: 26px;
-  font-size: 14px;
-  letter-spacing: .18em;
-  color: #8a9a95;
+  font-size: 16px;
+  letter-spacing: .16em;
+  color: #74857f;
 }
 
 /* 正面：任务详情 */
@@ -240,7 +242,7 @@
   border-radius: 6px;
   background: rgba(255, 254, 248, .9);
   color: var(--ink-soft);
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: .04em;
   cursor: pointer;
   z-index: 3;
@@ -268,8 +270,9 @@
   padding: 5px 12px;
   border: 1px solid var(--line-strong);
   border-radius: 3px;
-  font-size: 14px;
-  letter-spacing: .18em;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: .16em;
   color: var(--teal-700, #0f766e);
   background: rgba(240, 253, 250, .8);
   margin-bottom: 16px;
@@ -278,17 +281,17 @@
 .flip-front h2 {
   margin: 0 0 14px;
   font-family: var(--font-serif);
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 600;
-  letter-spacing: .04em;
+  letter-spacing: .03em;
   color: var(--teal-900);
   line-height: 1.35;
 }
 
 .flip-front p {
   margin: 0;
-  font-size: 17px;
-  line-height: 1.8;
+  font-size: 21px;
+  line-height: 1.7;
   color: var(--ink-soft);
   letter-spacing: .01em;
 }
@@ -298,16 +301,16 @@
   margin-top: 12px;
   padding-top: 10px;
   border-top: 1px dashed var(--line);
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5;
   letter-spacing: .02em;
-  color: #7f8f8a;
+  color: #67766f;
 }
 
 .task-foot {
   flex: 0 0 auto;
   margin-top: auto;
-  padding-top: 18px;
+  padding-top: 14px;
   border-top: 1px solid var(--line);
 }
 
@@ -328,7 +331,7 @@
 }
 
 .task-progress span {
-  font-size: 15px;
+  font-size: 17px;
   letter-spacing: .04em;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
@@ -351,8 +354,9 @@
   background: var(--teal-800);
   border: 1px solid var(--teal-900);
   color: #f7fffd;
-  font-size: 16px;
-  letter-spacing: .06em;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: .05em;
   text-decoration: none;
   transition: background-color .2s ease-out, transform .2s ease-out;
   white-space: nowrap;
@@ -365,7 +369,7 @@
   border-radius: 6px;
   background: transparent;
   color: var(--ink-soft);
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: .03em;
   cursor: pointer;
   transition: color .2s ease-out, border-color .2s ease-out;
@@ -383,9 +387,9 @@
 }
 
 .foot-item {
-  font-size: 14px;
+  font-size: 17px;
   color: var(--ink-soft);
-  letter-spacing: .02em;
+  letter-spacing: .01em;
 }
 .foot-item b {
   color: var(--teal-800);

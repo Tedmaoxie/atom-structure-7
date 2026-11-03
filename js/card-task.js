@@ -12,8 +12,8 @@
 (function () {
   'use strict';
 
-  var CARD_W = 96;
-  var CARD_H = 124;
+  var CARD_W = 88;
+  var CARD_H = 112;
 
   // Fisher–Yates 洗牌：卡片池初始顺序随机，学生不能靠序号直接归位
   function shuffle(list) {

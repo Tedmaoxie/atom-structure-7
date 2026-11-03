@@ -13,8 +13,8 @@
   --mint-100: #ccfbf1;
   --paper: #fffef8;
   --paper-2: #f7f5f0;
-  --ink: #2a2a28;
-  --ink-soft: #5a6360;
+  --ink: #23231f;
+  --ink-soft: #47514d;
   --line: #d8e6e1;
   --line-strong: #b6d2ca;
   --red: #b3261e;
@@ -36,6 +36,8 @@ html, body {
   background: #e8f4f1;
   color: var(--ink);
   font-family: var(--font-sans);
+  /* 整体加粗一档：投屏和长时间阅读更清楚，不再显得字细又小 */
+  font-weight: 600;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -90,7 +92,7 @@ body {
   border-radius: 8px;
   background: var(--paper);
   color: var(--teal-800);
-  font-size: 18px;
+  font-size: 20px;
   text-decoration: none;
   letter-spacing: .04em;
   box-shadow: var(--shadow-paper);
@@ -102,7 +104,8 @@ body {
 .title-block { min-width: 0; }
 
 .eyebrow {
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 600;
   letter-spacing: .24em;
   color: var(--teal-600);
   margin-bottom: 4px;
@@ -136,7 +139,7 @@ h1 {
   border: 1px dashed var(--line-strong);
   background: rgba(255, 254, 248, .7);
   color: var(--teal-800);
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: .05em;
 }
 
@@ -148,8 +151,9 @@ h1 {
   border: 1px solid var(--line-strong);
   background: var(--paper);
   color: var(--teal-900);
-  font-size: 17px;
+  font-size: 18px;
   font-family: var(--font-sans);
+  font-weight: 500;
   letter-spacing: .06em;
   cursor: pointer;
   box-shadow: var(--shadow-paper);
@@ -209,7 +213,8 @@ h1 {
   align-items: center;
   gap: 8px;
   font-family: var(--font-serif);
-  font-size: 19px;
+  font-size: 21px;
+  font-weight: 600;
   letter-spacing: .1em;
   color: var(--teal-900);
 }
@@ -223,9 +228,11 @@ h1 {
 }
 
 .panel-hint {
-  font-size: 15px;
+  font-size: 17px;
+  font-weight: 500;
   color: var(--ink-soft);
   letter-spacing: .02em;
+  line-height: 1.4;
 }
 
 /* ---------------- 记录面板（覆盖层） ---------------- */
@@ -301,7 +308,7 @@ h1 {
   padding: 10px 14px;
   background: var(--paper-2);
 }
-.stat-box .stat-label { font-size: 14px; color: var(--ink-soft); letter-spacing: .06em; }
+.stat-box .stat-label { font-size: 16px; color: var(--ink-soft); letter-spacing: .06em; }
 .stat-box .stat-value {
   font-family: var(--font-serif);
   font-size: 30px;
@@ -321,7 +328,7 @@ h1 {
 table.record-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 table.record-table th {
@@ -330,7 +337,7 @@ table.record-table th {
   background: var(--mint-50);
   color: var(--teal-900);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 17px;
   letter-spacing: .06em;
   text-align: left;
   padding: 11px 12px;
@@ -361,7 +368,8 @@ table.record-table .undone { color: var(--amber, #b45309); }
 
 .record-chart-title {
   font-family: var(--font-serif);
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 600;
   letter-spacing: .08em;
   color: var(--teal-900);
 }
@@ -370,7 +378,7 @@ table.record-table .undone { color: var(--amber, #b45309); }
   padding: 44px;
   text-align: center;
   color: var(--ink-soft);
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: .04em;
 }
 
@@ -389,7 +397,7 @@ table.record-table .undone { color: var(--amber, #b45309); }
   border-radius: 8px;
   background: rgba(6, 95, 70, .94);
   color: #f6fffd;
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: .05em;
   opacity: 0;
   pointer-events: none;
