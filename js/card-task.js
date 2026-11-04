@@ -27,6 +27,16 @@
     return arr;
   }
 
+  // 卡片背面的小放大镜按钮：只有翻到背面才看得到，点它才会放大预览
+  function zoomButtonHTML() {
+    return '<button class="card-zoom" type="button" aria-label="放大查看" title="放大查看">' +
+      '<svg viewBox="0 0 20 20" aria-hidden="true">' +
+        '<circle cx="8.6" cy="8.6" r="5.4" fill="none" stroke="currentColor" stroke-width="1.9"/>' +
+        '<line x1="12.8" y1="12.8" x2="17" y2="17" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>' +
+      '</svg>' +
+    '</button>';
+  }
+
   function CardTask(config) {
     this.config = config;
     this.key = config.storageKey;
@@ -43,6 +53,7 @@
     this.lastSelected = null;
     this.showOverlay = false; // 任务三：是否叠加原子半径
     this.previewTimer = null; // 卡片放大预览的计时器
+    this.autoPreviewed = {};  // 已经自动放大过的卡片：每张只自动放大第一次
   }
 
   /* ================= 初始化 ================= */
@@ -146,9 +157,8 @@
       el.innerHTML =
         '<div class="card-inner">' +
           '<div class="card-face front">' + self.config.frontHTML(item) + '</div>' +
-          '<div class="card-face back">' + self.config.backHTML(item) + '</div>' +
+          '<div class="card-face back">' + self.config.backHTML(item) + zoomButtonHTML() + '</div>' +
         '</div>';
-
       pool.appendChild(el);
       self.cardEls[item.id] = el;
       self.setTransform(item.id);
@@ -162,6 +172,12 @@
       });
 
       el.addEventListener('pointerdown', function (ev) {
+        // 点卡片背面的放大镜：只放大预览，不翻面也不拖拽
+        if (ev.target.closest && ev.target.closest('.card-zoom')) {
+          ev.preventDefault();
+          self.previewCard(item);
+          return;
+        }
         self.beginDrag(el, item, ev);
       });
     });
@@ -292,9 +308,13 @@
       if (self.pos[d.item.id]) self.pos[d.item.id].paused = false;
 
       if (!d.moved) {
-        // 轻点：先回到卡片池原位，再翻面；只有翻到背面（读数据）时才放大预览
+        // 轻点：先回到卡片池原位，再翻面
         self.returnToPool(d.item, d.stageX, d.stageY);
-        if (self.flip(d.item)) self.schedulePreview(d.item);
+        var flipped = self.flip(d.item);
+        // 每张卡片只在第一次翻到背面时自动放大；之后再放大要点背面右下角的放大镜
+        if (flipped && !self.autoPreviewed[d.item.id]) {
+          self.schedulePreview(d.item);
+        }
       } else {
         var placed = self.tryPlace(d.item, ev.clientX, ev.clientY);
         if (!placed) self.returnToPool(d.item, d.stageX, d.stageY);
@@ -404,7 +424,11 @@
       self.previewTimer = null;
       var cardEl = self.cardEls[item.id];
       // 期间若又翻回正面，就不再放大预览
-      if (cardEl && cardEl.classList.contains('is-flipped')) self.previewCard(item);
+      if (cardEl && cardEl.classList.contains('is-flipped')) {
+        // 确认这次真的放大了，才记住“这张卡已经自动放大过”
+        self.autoPreviewed[item.id] = true;
+        self.previewCard(item);
+      }
     }, 440);
   };
 
