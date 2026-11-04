@@ -119,7 +119,7 @@
     },
     task2: {
       title: '原子半径卡片探究',
-      subtitle: '寻找与铝原子半径相似的元素原子',
+      subtitle: '寻找与铝原子半径相似的原子',
       source: 'Cordero 等，2008 · 单键共价半径',
       unitNote: '共价半径 / pm',
       refLabel: 'Al',

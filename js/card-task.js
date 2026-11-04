@@ -84,6 +84,15 @@
     document.getElementById('eyebrow').textContent = this.config.eyebrow;
     document.title = meta.title + ' · 元素周期律';
     document.getElementById('pool-watermark').textContent = '待整理 · ' + this.items.length + ' 张';
+
+    // 切换日间/夜间模式后重绘散点图等由 JS 生成的图形，让颜色跟着主题走
+    var self = this;
+    document.addEventListener('chemthemechange', function () {
+      self.renderAll();
+      // 记录浮层开着时，里面的大散点图也要按新配色重画
+      var overlay = document.getElementById('record-overlay');
+      if (overlay && overlay.classList.contains('is-open')) self.openRecords();
+    });
   };
 
   /* ================= 卡片：创建与漂浮 ================= */

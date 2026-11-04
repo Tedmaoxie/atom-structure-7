@@ -16,6 +16,15 @@
     return Math.round(v * 10) / 10;
   }
 
+  // 读取 CSS 变量，让图表颜色跟随日间 / 夜间主题变化
+  function cssVar(name, fallback) {
+    var v = '';
+    try {
+      v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    } catch (e) { v = ''; }
+    return v || fallback;
+  }
+
   /* ------------------------------------------------------------------
      散点图
      points: [{ x, y, label }]
@@ -36,30 +45,42 @@
     function py(y) { return H - pad.b - (y - yMin) / (yMax - yMin) * (H - pad.t - pad.b); }
 
     var out = [];
+
+    // 主题色一次性取出，避免每个刻度重复计算样式
+    var C = {
+      grid: cssVar('--chart-grid', '#e3eeeb'),
+      gridSoft: cssVar('--chart-grid-soft', '#eef5f3'),
+      axis: cssVar('--chart-axis', '#b6d2ca'),
+      text: cssVar('--chart-text', '#5d6b66'),
+      strong: cssVar('--chart-text-strong', '#065f46'),
+      label: cssVar('--chart-label', '#2f4a44'),
+      pointStroke: cssVar('--chart-point-stroke', '#fffef8'),
+      legendBg: cssVar('--chart-legend-bg', 'rgba(255,254,248,.9)')
+    };
     out.push('<svg class="chart-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet" xmlns="' + 'http://www.w3.org/2000/svg' + '">');
 
     // 横向网格线与 y 轴刻度
     for (var i = 0; i <= yTicks; i++) {
       var val = yMin + (yMax - yMin) * i / yTicks;
       var y = py(val);
-      out.push('<line x1="' + pad.l + '" y1="' + y + '" x2="' + (W - pad.r) + '" y2="' + y + '" stroke="#e3eeeb" stroke-width="1"' + (i === 0 ? '' : ' stroke-dasharray="3 4"') + '/>');
-      out.push('<text x="' + (pad.l - 8) + '" y="' + (y + 5) + '" text-anchor="end" font-size="16" fill="#5d6b66">' + fmtTick(val) + '</text>');
+      out.push('<line x1="' + pad.l + '" y1="' + y + '" x2="' + (W - pad.r) + '" y2="' + y + '" stroke="' + C.grid + '" stroke-width="1"' + (i === 0 ? '' : ' stroke-dasharray="3 4"') + '/>');
+      out.push('<text x="' + (pad.l - 8) + '" y="' + (y + 5) + '" text-anchor="end" font-size="16" fill="' + C.text + '">' + fmtTick(val) + '</text>');
     }
 
     // 纵向网格线与 x 轴刻度
     xTicks.forEach(function (t) {
       var x = px(t);
-      out.push('<line x1="' + x + '" y1="' + pad.t + '" x2="' + x + '" y2="' + (H - pad.b) + '" stroke="#eef5f3" stroke-width="1" stroke-dasharray="2 5"/>');
-      out.push('<text x="' + x + '" y="' + (H - pad.b + 22) + '" text-anchor="middle" font-size="16" fill="#5d6b66">' + t + '</text>');
+      out.push('<line x1="' + x + '" y1="' + pad.t + '" x2="' + x + '" y2="' + (H - pad.b) + '" stroke="' + C.gridSoft + '" stroke-width="1" stroke-dasharray="2 5"/>');
+      out.push('<text x="' + x + '" y="' + (H - pad.b + 22) + '" text-anchor="middle" font-size="16" fill="' + C.text + '">' + t + '</text>');
     });
 
     // 坐标轴
-    out.push('<line x1="' + pad.l + '" y1="' + pad.t + '" x2="' + pad.l + '" y2="' + (H - pad.b) + '" stroke="#b6d2ca" stroke-width="1.2"/>');
-    out.push('<line x1="' + pad.l + '" y1="' + (H - pad.b) + '" x2="' + (W - pad.r) + '" y2="' + (H - pad.b) + '" stroke="#b6d2ca" stroke-width="1.2"/>');
+    out.push('<line x1="' + pad.l + '" y1="' + pad.t + '" x2="' + pad.l + '" y2="' + (H - pad.b) + '" stroke="' + C.axis + '" stroke-width="1.2"/>');
+    out.push('<line x1="' + pad.l + '" y1="' + (H - pad.b) + '" x2="' + (W - pad.r) + '" y2="' + (H - pad.b) + '" stroke="' + C.axis + '" stroke-width="1.2"/>');
 
     // 轴标题
-    out.push('<text x="' + pad.l + '" y="' + (pad.t - 12) + '" font-size="17" font-weight="600" fill="#065f46" letter-spacing="1">' + esc(cfg.yLabel || '') + '</text>');
-    out.push('<text x="' + (W - pad.r) + '" y="' + (H - 2) + '" text-anchor="end" font-size="16" fill="#47514d" letter-spacing="1">' + esc(cfg.xLabel || '') + '</text>');
+    out.push('<text x="' + pad.l + '" y="' + (pad.t - 12) + '" font-size="17" font-weight="600" fill="' + C.strong + '" letter-spacing="1">' + esc(cfg.yLabel || '') + '</text>');
+    out.push('<text x="' + (W - pad.r) + '" y="' + (H - 2) + '" text-anchor="end" font-size="16" fill="' + C.text + '" letter-spacing="1">' + esc(cfg.xLabel || '') + '</text>');
 
     // 数据点：逐点点亮，已点亮的才绘制；p.color 可单独指定颜色
     var labeled = {};
@@ -72,10 +93,10 @@
       if (showLabel) labeled[p.label] = true;
 
       var color = p.color || '#0d9488';
-      out.push('<circle cx="' + cx + '" cy="' + cy + '" r="4.6" fill="' + color + '" stroke="#fffef8" stroke-width="1.4"><title>' +
+      out.push('<circle cx="' + cx + '" cy="' + cy + '" r="4.6" fill="' + color + '" stroke="' + C.pointStroke + '" stroke-width="1.4"><title>' +
         esc(p.label + '：' + (cfg.formatY ? cfg.formatY(p.y) : p.y) + (cfg.unit ? ' ' + cfg.unit : '')) + '</title></circle>');
       if (showLabel) {
-        out.push('<text x="' + (cx + 8) + '" y="' + (cy - 7) + '" font-size="15" font-weight="500" fill="#2f4a44">' + esc(p.label) + '</text>');
+        out.push('<text x="' + (cx + 8) + '" y="' + (cy - 7) + '" font-size="15" font-weight="500" fill="' + C.label + '">' + esc(p.label) + '</text>');
       }
     });
 
@@ -83,7 +104,7 @@
     (cfg.extraPoints || []).forEach(function (p) {
       if (p.y === null || p.y === undefined || isNaN(p.y)) return;
       var color = cfg.extraColor || '#c2693c';
-      out.push('<circle cx="' + px(p.x) + '" cy="' + py(p.y) + '" r="4.8" fill="#fffef8" stroke="' + color +
+      out.push('<circle cx="' + px(p.x) + '" cy="' + py(p.y) + '" r="4.8" fill="' + C.pointStroke + '" stroke="' + color +
         '" stroke-width="2.2"><title>' + esc(p.label + '：' + p.y + (cfg.unit ? ' ' + cfg.unit : '') + '（' +
         (cfg.extraLabel || '对照') + '）') + '</title></circle>');
     });
@@ -95,18 +116,18 @@
       var lx = W - pad.r - totalW - 12;
       var ly = pad.t + 22;
       out.push('<rect x="' + (lx - 10) + '" y="' + (ly - 18) + '" width="' + (totalW + 20) +
-        '" height="30" rx="15" fill="rgba(255,254,248,.9)" stroke="#e3eeeb"/>');
+        '" height="30" rx="15" fill="' + C.legendBg + '" stroke="' + C.grid + '"/>');
       cfg.legend.forEach(function (it, idx) {
-        out.push('<circle cx="' + (lx + 3) + '" cy="' + (ly - 5) + '" r="5" fill="' + (it.hollow ? '#fffef8' : it.color) +
+        out.push('<circle cx="' + (lx + 3) + '" cy="' + (ly - 5) + '" r="5" fill="' + (it.hollow ? C.pointStroke : it.color) +
           '" stroke="' + it.color + '" stroke-width="' + (it.hollow ? 2 : 1.2) + '"/>');
-        out.push('<text x="' + (lx + 14) + '" y="' + ly + '" font-size="15" fill="#3d534d">' + esc(it.label) + '</text>');
+        out.push('<text x="' + (lx + 14) + '" y="' + ly + '" font-size="15" fill="' + C.label + '">' + esc(it.label) + '</text>');
         lx += widths[idx] + 16;
       });
     }
 
     // 已点亮数量角标
     if (cfg.counterText) {
-      out.push('<text x="' + (W - pad.r) + '" y="' + (pad.t - 12) + '" text-anchor="end" font-size="16" font-weight="500" fill="#0f766e">' + esc(cfg.counterText) + '</text>');
+      out.push('<text x="' + (W - pad.r) + '" y="' + (pad.t - 12) + '" text-anchor="end" font-size="16" font-weight="500" fill="' + C.strong + '">' + esc(cfg.counterText) + '</text>');
     }
 
     out.push('</svg>');

@@ -16,6 +16,15 @@
   var litAt = {};     // 点亮时间戳
   var cells = {};
 
+  // 读取主题色：日间/夜间模式下结构示意图的线条与文字颜色不同
+  function themeColor(name, fallback) {
+    var v = '';
+    try {
+      v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    } catch (e) { v = ''; }
+    return v || fallback;
+  }
+
   /* ---------------- 电子层排布 ---------------- */
   // 中性原子的真实排布直接取数据表；离子状态按规则示意填充
   function fillShells(n) {
@@ -61,14 +70,14 @@
   /* ---------------- 结构示意图 SVG ---------------- */
   // 按教材画法：原子核在左侧，电子层为约 90° 的同心圆弧（上下各 45°），
   // 电子数嵌在弧线正右方的缺口里，而不是浮在弧线外侧
-  function arcPath(cx, cy, r, a1, a2, width) {
+  function arcPath(cx, cy, r, a1, a2, width, color) {
     var x1 = cx + r * Math.cos(a1);
     var y1 = cy + r * Math.sin(a1);
     var x2 = cx + r * Math.cos(a2);
     var y2 = cy + r * Math.sin(a2);
     return '<path d="M ' + x1.toFixed(2) + ' ' + y1.toFixed(2) +
       ' A ' + r.toFixed(2) + ' ' + r.toFixed(2) + ' 0 0 1 ' + x2.toFixed(2) + ' ' + y2.toFixed(2) +
-      '" fill="none" stroke="#0d9488" stroke-width="' + width + '" opacity="0.92"/>';
+      '" fill="none" stroke="' + color + '" stroke-width="' + width + '" opacity="0.92"/>';
   }
 
   function structureSVG(shells, z, size, mini) {
@@ -80,6 +89,12 @@
     var half = Math.PI / 4; // 上下各 45°
     var parts = [];
 
+    // 线条与文字颜色跟随主题
+    var cOrbit = themeColor('--svg-orbit', '#0d9488');
+    var cText = themeColor('--svg-e-text', '#047857');
+    var cCoreFill = themeColor('--svg-core-fill', '#fffef8');
+    var cCoreStroke = themeColor('--svg-core-stroke', '#065f46');
+
     parts.push('<svg viewBox="0 0 ' + size + ' ' + size + '" xmlns="http://www.w3.org/2000/svg">');
 
     shells.forEach(function (n, i) {
@@ -88,7 +103,7 @@
 
       if (mini) {
         // 周期表小格：完整 90° 弧，不放数字
-        parts.push(arcPath(cx, cy, r, -half, half, width));
+        parts.push(arcPath(cx, cy, r, -half, half, width, cOrbit));
         return;
       }
 
@@ -97,19 +112,19 @@
       var gap = Math.asin(Math.min(0.85, halfW / r));
 
       // 正右方留出数字缺口，上下各画一段弧
-      parts.push(arcPath(cx, cy, r, -half, -gap, width));
-      parts.push(arcPath(cx, cy, r, gap, half, width));
+      parts.push(arcPath(cx, cy, r, -half, -gap, width, cOrbit));
+      parts.push(arcPath(cx, cy, r, gap, half, width, cOrbit));
 
       parts.push('<text x="' + (cx + r).toFixed(2) + '" y="' + (cy + fs * 0.35).toFixed(2) +
-        '" text-anchor="middle" font-size="' + fs.toFixed(1) + '" fill="#047857" font-family="serif">' + n + '</text>');
+        '" text-anchor="middle" font-size="' + fs.toFixed(1) + '" fill="' + cText + '" font-family="serif">' + n + '</text>');
     });
 
     // 原子核：圆心标核电荷数
     parts.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + coreR +
-      '" fill="#fffef8" stroke="#065f46" stroke-width="' + (mini ? 1.2 : 2) + '"/>');
+      '" fill="' + cCoreFill + '" stroke="' + cCoreStroke + '" stroke-width="' + (mini ? 1.2 : 2) + '"/>');
     var coreFs = mini ? coreR * 0.9 : coreR * 0.62;
     parts.push('<text x="' + cx + '" y="' + (cy + coreFs * 0.36) + '" text-anchor="middle" font-size="' + coreFs +
-      '" fill="#065f46" font-family="serif">+' + z + '</text>');
+      '" fill="' + cCoreStroke + '" font-family="serif">+' + z + '</text>');
 
     parts.push('</svg>');
     return parts.join('');
@@ -127,6 +142,8 @@
     var h = 300;
     var t0 = performance.now();
     var raf = null;
+    // 轨道线颜色跟随主题（夜间模式要更亮，否则看不清）
+    var orbitColor = themeColor('--atom-orbit', 'rgba(13,148,136,0.28)');
 
     // 适配高分屏，保证 iPad 上不发虚
     function resize() {
@@ -136,6 +153,7 @@
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      orbitColor = themeColor('--atom-orbit', 'rgba(13,148,136,0.28)');
     }
 
     // 三维点投影：先绕 X 轴倾斜，再绕 Y 轴旋转
@@ -191,8 +209,8 @@
           else ctx.lineTo(cx + p.x, cy + p.y);
         }
         ctx.closePath();
-        ctx.strokeStyle = 'rgba(13,148,136,0.28)';
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = orbitColor;
+        ctx.lineWidth = 1.4;
         ctx.stroke();
       });
 
@@ -252,6 +270,10 @@
       set: function (newZ, newShells) {
         z = newZ;
         shells = newShells.slice();
+      },
+      // 切换日间/夜间模式后刷新线条颜色
+      restyle: function () {
+        orbitColor = themeColor('--atom-orbit', 'rgba(13,148,136,0.28)');
       }
     };
   }
@@ -538,4 +560,11 @@
   bind();
   paintTable();
   render();
+
+  // 切换日间/夜间模式后重绘结构示意图、周期表小图与三维模型的轨道线
+  document.addEventListener('chemthemechange', function () {
+    render();
+    paintTable();
+    if (view3d) view3d.restyle();
+  });
 })();

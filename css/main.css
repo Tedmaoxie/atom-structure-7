@@ -17,6 +17,9 @@
 
 .brand { display: flex; align-items: center; gap: 14px; }
 
+/* 顶栏右侧：夜间模式与重置按钮并排 */
+.hero-head-actions { display: flex; align-items: center; gap: 12px; }
+
 /* 方形印章式标识，只用青绿，不做金色奢华装饰 */
 .brand-seal {
   width: 46px;
@@ -211,7 +214,7 @@
   bottom: 26px;
   font-size: 16px;
   letter-spacing: .16em;
-  color: #74857f;
+  color: #67766f;
 }
 
 /* 正面：任务详情 */
