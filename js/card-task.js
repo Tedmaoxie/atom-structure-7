@@ -4,7 +4,7 @@
      1. 卡片凌乱悬浮（缓慢柔和的漂浮，悬停或按住暂停）
      2. 轻点翻面（3D 纸质翻面），记录翻面次数与顺序
      3. 拖拽到周期表格子归位；放错先放入、格子标红、可拖出重放
-     4. 散点图逐点点亮（按任务配置去重）
+     4. 散点图只显示“正确归位”的卡片数据（读数 → 归位 → 上表，突出位—构—性）
      5. 计算器（可选）与任务四柱状图
      6. 历史记录：点击顺序、翻面次数、停留时间、重复点击
      7. 一键展开记录面板（适合截图投屏）
@@ -509,7 +509,7 @@
     var correct = targetZ === item.z;
     var rec = this.records[item.id];
 
-    // 未翻面直接拖入也允许，但没有停留时间；散点仍不点亮
+    // 未翻面直接拖入也允许，但没有停留时间；只有放对格子才会上散点图
     if (!rec) {
       rec = this.records[item.id] = {
         order: ++this.orderCount,
@@ -714,12 +714,21 @@
     chip.textContent = '已翻面 ' + this.flippedItems().length + ' / ' + this.items.length;
   };
 
+  // 正确归位到周期表的卡片：只有这些卡片才进入散点图，突出“位—构—性”的关系
+  CardTask.prototype.placedItems = function () {
+    var self = this;
+    return this.items.filter(function (item) {
+      var rec = self.records[item.id];
+      return rec && rec.placed && rec.correct;
+    }).sort(function (a, b) {
+      return self.records[a.id].order - self.records[b.id].order;
+    });
+  };
+
   CardTask.prototype.scatterPoints = function () {
     var self = this;
     var pts = [];
-    this.items.forEach(function (item) {
-      var rec = self.records[item.id];
-      if (!rec || rec.flipCount <= 0) return;
+    this.placedItems().forEach(function (item) {
       if (!self.config.chartable(item)) return;
       self.config.pointsFor(item).forEach(function (p) {
         pts.push(p);
@@ -728,12 +737,11 @@
     return pts;
   };
 
-  // 统计“已点亮”的元素个数（任务四一个元素有多个价态点，按元素计数）
+  // 统计散点图上已出现的元素个数（任务四一个元素有多个价态点，按元素计数）
   CardTask.prototype.litElementCount = function () {
     var self = this;
-    return this.items.filter(function (item) {
-      var rec = self.records[item.id];
-      return rec && rec.flipCount > 0 && self.config.chartable(item);
+    return this.placedItems().filter(function (item) {
+      return self.config.chartable(item);
     }).length;
   };
 
@@ -745,9 +753,9 @@
     var extra = [];
     var legend = null;
 
-    // 任务三：叠加已翻面离子对应元素的原子半径，异色空心点便于对比
+    // 任务三：叠加“已正确归位”离子对应元素的原子半径，异色空心点便于对比
     if (this.showOverlay && overlay) {
-      extra = overlay.points(this.flippedItems());
+      extra = overlay.points(this.placedItems());
       legend = [
         { label: '离子半径', color: '#0d9488' },
         { label: overlay.label, color: overlay.color, hollow: true }
@@ -772,7 +780,7 @@
       extraColor: overlay ? overlay.color : null,
       extraLabel: overlay ? overlay.label : null,
       legend: legend,
-      counterText: '已点亮 ' + this.litElementCount() + ' / ' + total
+      counterText: '已归位 ' + this.litElementCount() + ' / ' + total
     });
   };
 
@@ -876,8 +884,9 @@
     if (!btn || !this.config.overlay) return;
 
     btn.addEventListener('click', function () {
-      if (!self.flippedItems().length) {
-        window.App.toast('先翻面几张卡片，再叠加对应的原子半径');
+      // 只有正确归位的离子才会出现在散点图上，所以提示语也改成“先归位”
+      if (!self.placedItems().length) {
+        window.App.toast('先把离子卡片正确归位到周期表，再叠加对应的原子半径');
         return;
       }
       self.showOverlay = !self.showOverlay;
@@ -961,7 +970,7 @@
       unit: this.config.unit,
       formatY: this.config.formatY,
       points: this.scatterPoints(),
-      counterText: '已点亮 ' + this.litElementCount() + ' / ' + this.config.chartTotal
+      counterText: '已归位 ' + this.litElementCount() + ' / ' + this.config.chartTotal
     });
 
     document.getElementById('record-overlay').classList.add('is-open');
