@@ -250,7 +250,7 @@
 
       // 核电荷数
       ctx.fillStyle = '#f0fdfa';
-      ctx.font = '600 ' + (coreR * 0.82) + 'px "PingFang SC", "Microsoft YaHei", serif';
+      ctx.font = '600 ' + (coreR * 0.82) + 'px "MiSans SC", "PingFang SC", "Microsoft YaHei", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('+' + z, cx, cy + 1);

@@ -3,6 +3,25 @@
    风格：折纸纸质感 + 新古典秩序网格 + 侘寂留白
    ===================================================================== */
 
+/* ---------------- 内嵌字体：MiSans（按页面用字裁剪的子集，可离线） ----------------
+   只保留课件里真正用到的 800 多个字符，两个字重共约 170KB，
+   学生机没装任何字体也能看到同样的圆润字形 */
+@font-face {
+  font-family: "MiSans SC";
+  src: url("../fonts/misans-sc-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MiSans SC";
+  src: url("../fonts/misans-sc-semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --teal-900: #065f46;
   --teal-800: #047857;
@@ -36,8 +55,8 @@
   --chart-point-stroke: #fffef8;
   --chart-legend-bg: rgba(255, 254, 248, .9);
   --atom-orbit: rgba(13, 148, 136, .28);
-  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", "Times New Roman", serif;
-  --font-sans: "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --font-serif: "MiSans SC", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --font-sans: "MiSans SC", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -294,6 +313,7 @@ h1 {
   margin: 0;
   font-family: var(--font-serif);
   font-size: 26px;
+  font-weight: 600;
   letter-spacing: .1em;
   color: var(--teal-900);
 }

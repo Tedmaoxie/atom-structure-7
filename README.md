@@ -38,6 +38,9 @@ python -m http.server 8000
 ├── task2.html          任务二：原子半径卡片探究
 ├── task3.html          任务三：离子半径卡片探究
 ├── task4.html          任务四：常见化合价卡片探究
+├── fonts/
+│   ├── misans-sc-regular.woff2    MiSans Regular 子集（约 81KB）
+│   └── misans-sc-semibold.woff2   MiSans Semibold 子集（约 82KB）
 ├── css/
 │   ├── base.css        基础变量、排版、按钮
 │   ├── main.css        主页面样式
